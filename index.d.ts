@@ -1,0 +1,2 @@
+import './registerAdvances';
+import './registerRules';
