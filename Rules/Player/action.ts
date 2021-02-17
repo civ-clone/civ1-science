@@ -17,7 +17,7 @@ export const getRules: (
   new Action(
     new Criterion(
       (player: Player): boolean =>
-        playerResearchRegistry.getByPlayer(player).researching() !== null
+        playerResearchRegistry.getByPlayer(player).researching() === null
     ),
     new Criterion(
       (player: Player): boolean =>
