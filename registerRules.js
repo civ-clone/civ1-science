@@ -8,5 +8,5 @@ const process_yield_1 = require("./Rules/City/process-yield");
 const requirements_1 = require("./Rules/Research/requirements");
 const research_1 = require("./Rules/Player/research");
 const research_complete_1 = require("./Rules/Player/research-complete");
-RuleRegistry_1.instance.register(...action_1.default(), ...added_1.default(), ...cost_1.default(), ...process_yield_1.default(), ...requirements_1.default(), ...research_1.default(), ...research_complete_1.default());
+RuleRegistry_1.instance.register(...(0, action_1.default)(), ...(0, added_1.default)(), ...(0, cost_1.default)(), ...(0, process_yield_1.default)(), ...(0, requirements_1.default)(), ...(0, research_1.default)(), ...(0, research_complete_1.default)());
 //# sourceMappingURL=registerRules.js.map

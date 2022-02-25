@@ -6,9 +6,14 @@ import { instance as engine } from '@civ-clone/core-engine/Engine';
 
 export const getRules: () => Started[] = (): Started[] => [
   new Started(
-    new Effect((playerResearch: PlayerResearch, advance: Advance): void => {
-      engine.emit('player:research', playerResearch, advance);
-    })
+    new Effect(
+      (
+        playerResearch: PlayerResearch,
+        AdvanceToResearch: typeof Advance
+      ): void => {
+        engine.emit('player:research', playerResearch, AdvanceToResearch);
+      }
+    )
   ),
 ];
 

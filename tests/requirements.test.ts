@@ -72,15 +72,17 @@ describe('Advance', () => {
     ]
   );
 
-  ([
-    Alphabet,
-    BronzeWorking,
-    CeremonialBurial,
-    HorsebackRiding,
-    Masonry,
-    Pottery,
-    TheWheel,
-  ] as typeof Advance[]).forEach((TestAdvance: typeof Advance): void => {
+  (
+    [
+      Alphabet,
+      BronzeWorking,
+      CeremonialBurial,
+      HorsebackRiding,
+      Masonry,
+      Pottery,
+      TheWheel,
+    ] as typeof Advance[]
+  ).forEach((TestAdvance: typeof Advance): void => {
     it(`should be possible to discover ${TestAdvance.name} without any prerequisites being discovered`, (): void => {
       const playerResearch = new PlayerResearch(
         player,
@@ -92,43 +94,43 @@ describe('Advance', () => {
     });
   });
 
-  ([
-    [Astronomy, Mathematics, Mysticism],
-    [BridgeBuilding, Construction, IronWorking],
-    [Chivalry, Feudalism, HorsebackRiding],
-    [CodeOfLaws, Alphabet],
-    [Construction, Currency, Masonry],
-    [Currency, BronzeWorking],
-    [Engineering, Construction, TheWheel],
-    [Feudalism, Masonry, Monarchy],
-    [Gunpowder, Invention, IronWorking],
-    [Invention, Engineering, Literacy],
-    [IronWorking, BronzeWorking],
-    [Literacy, CodeOfLaws, Writing],
-    [MapMaking, Alphabet],
-    [Mathematics, Alphabet, Masonry],
-    [Monarchy, CodeOfLaws, Mysticism],
-    [Mysticism, CeremonialBurial],
-    [Navigation, Astronomy, MapMaking],
-    [TheRepublic, CodeOfLaws, Literacy],
-    [Writing, Alphabet],
-  ] as typeof Advance[][]).forEach(
-    ([TestAdvance, ...Requirements]: typeof Advance[]): void => {
-      it(`should only be possible to discover ${TestAdvance.name} once prerequisites have been discovered`, (): void => {
-        const playerResearch = new PlayerResearch(
-          player,
-          advanceRegistry,
-          ruleRegistry
-        );
+  (
+    [
+      [Astronomy, Mathematics, Mysticism],
+      [BridgeBuilding, Construction, IronWorking],
+      [Chivalry, Feudalism, HorsebackRiding],
+      [CodeOfLaws, Alphabet],
+      [Construction, Currency, Masonry],
+      [Currency, BronzeWorking],
+      [Engineering, Construction, TheWheel],
+      [Feudalism, Masonry, Monarchy],
+      [Gunpowder, Invention, IronWorking],
+      [Invention, Engineering, Literacy],
+      [IronWorking, BronzeWorking],
+      [Literacy, CodeOfLaws, Writing],
+      [MapMaking, Alphabet],
+      [Mathematics, Alphabet, Masonry],
+      [Monarchy, CodeOfLaws, Mysticism],
+      [Mysticism, CeremonialBurial],
+      [Navigation, Astronomy, MapMaking],
+      [TheRepublic, CodeOfLaws, Literacy],
+      [Writing, Alphabet],
+    ] as typeof Advance[][]
+  ).forEach(([TestAdvance, ...Requirements]: typeof Advance[]): void => {
+    it(`should only be possible to discover ${TestAdvance.name} once prerequisites have been discovered`, (): void => {
+      const playerResearch = new PlayerResearch(
+        player,
+        advanceRegistry,
+        ruleRegistry
+      );
 
-        expect(playerResearch.available().includes(TestAdvance)).to.false;
+      expect(playerResearch.available().includes(TestAdvance)).to.false;
 
-        Requirements.forEach((Requirement: typeof Advance) =>
-          playerResearch.addAdvance(Requirement)
-        );
+      Requirements.forEach((Requirement: typeof Advance) =>
+        playerResearch.addAdvance(Requirement)
+      );
 
-        expect(playerResearch.available().includes(TestAdvance)).to.true;
-      });
-    }
-  );
+      expect(playerResearch.available().includes(TestAdvance)).to.true;
+    });
+  });
 });
