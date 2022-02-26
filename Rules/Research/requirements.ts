@@ -119,7 +119,7 @@ export const getRules: () => Requirements[] = (): Requirements[] => [
       [Philosophy, Mysticism, Literacy],
       [Physics, Navigation, Mathematics],
       [Plastics, Refining, SpaceFlight],
-      [Railroad, BridgeBuilding, Invention],
+      [Railroad, BridgeBuilding, SteamEngine],
       [Recycling, Democracy, MassProduction],
       [Refining, Corporation, Chemistry],
       [Religion, Philosophy, Writing],

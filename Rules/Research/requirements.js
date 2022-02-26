@@ -52,7 +52,7 @@ const getRules = () => [
         [Advances_1.Philosophy, Advances_1.Mysticism, Advances_1.Literacy],
         [Advances_1.Physics, Advances_1.Navigation, Advances_1.Mathematics],
         [Advances_1.Plastics, Advances_1.Refining, Advances_1.SpaceFlight],
-        [Advances_1.Railroad, Advances_1.BridgeBuilding, Advances_1.Invention],
+        [Advances_1.Railroad, Advances_1.BridgeBuilding, Advances_1.SteamEngine],
         [Advances_1.Recycling, Advances_1.Democracy, Advances_1.MassProduction],
         [Advances_1.Refining, Advances_1.Corporation, Advances_1.Chemistry],
         [Advances_1.Religion, Advances_1.Philosophy, Advances_1.Writing],
