@@ -17,6 +17,19 @@ export const getRules: (
       playerResearchRegistry.register(new PlayerResearch(player))
     )
   ),
+  new Added(
+    new Effect((player: Player): void => {
+      const playerResearch = playerResearchRegistry.getByPlayer(player);
+
+      for (let i = 0, max = Math.floor(4 * Math.random()); i < max; i++) {
+        const available = playerResearch.available();
+
+        playerResearch.addAdvance(
+          available[Math.floor(Math.random() * available.length)]
+        );
+      }
+    })
+  ),
 ];
 
 export default getRules;
