@@ -16,9 +16,9 @@ export const getRules: (
 ): ProcessYield[] => [
   new ProcessYield(
     new Criterion((cityYield: Yield): boolean => cityYield instanceof Research),
-    new Effect((cityYield: Yield, city: City): void => {
-      playerResearchRegistry.getByPlayer(city.player()).add(cityYield);
-    })
+    new Effect((cityYield: Yield, city: City): void =>
+      playerResearchRegistry.getByPlayer(city.player()).add(cityYield)
+    )
   ),
 ];
 

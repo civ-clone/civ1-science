@@ -21,7 +21,15 @@ export const getRules: (
     new Effect((player: Player): void => {
       const playerResearch = playerResearchRegistry.getByPlayer(player);
 
-      for (let i = 0, max = Math.floor(4 * Math.random()); i < max; i++) {
+      for (
+        let i = 0,
+          max = Math.min(
+            playerResearch.available().length,
+            Math.floor(4 * Math.random())
+          );
+        i < max;
+        i++
+      ) {
         const available = playerResearch.available();
 
         playerResearch.addAdvance(
