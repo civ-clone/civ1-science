@@ -24,7 +24,7 @@ export const getRules: (
         playerResearchRegistry.getByPlayer(player).available().length > 0
     ),
     new Effect((player: Player): PlayerAction[] => [
-      new ChooseResearch(playerResearchRegistry.getByPlayer(player)),
+      new ChooseResearch(player, playerResearchRegistry.getByPlayer(player)),
     ])
   ),
 ];
