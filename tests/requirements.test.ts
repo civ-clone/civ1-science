@@ -34,7 +34,7 @@ import RuleRegistry from '@civ-clone/core-rule/RuleRegistry';
 import { expect } from 'chai';
 import requirements from '../Rules/Research/requirements';
 
-describe('Advance', () => {
+describe('requirements', () => {
   const ruleRegistry = new RuleRegistry(),
     player = new Player(ruleRegistry),
     advanceRegistry = new AdvanceRegistry();

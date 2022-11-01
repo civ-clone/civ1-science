@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRules = void 0;
-const Started_1 = require("@civ-clone/core-science/Rules/Started");
-const Effect_1 = require("@civ-clone/core-rule/Effect");
 const Engine_1 = require("@civ-clone/core-engine/Engine");
-const getRules = () => [
+const Effect_1 = require("@civ-clone/core-rule/Effect");
+const Started_1 = require("@civ-clone/core-science/Rules/Started");
+const getRules = (engine = Engine_1.instance) => [
     new Started_1.default(new Effect_1.default((playerResearch, AdvanceToResearch) => {
-        Engine_1.instance.emit('player:research', playerResearch, AdvanceToResearch);
+        engine.emit('player:research', playerResearch, AdvanceToResearch);
     })),
 ];
 exports.getRules = getRules;
 exports.default = exports.getRules;
-//# sourceMappingURL=research.js.map
+//# sourceMappingURL=started.js.map
