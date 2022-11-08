@@ -10,9 +10,11 @@ import Criterion from '@civ-clone/core-rule/Criterion';
 import Advance from '@civ-clone/core-science/Advance';
 
 export const getRules: (
-  playerResearchRegistry?: PlayerResearchRegistry
+  playerResearchRegistry?: PlayerResearchRegistry,
+  randomNumberGenerator?: () => number
 ) => Captured[] = (
-  playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance
+  playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance,
+  randomNumberGenerator: () => number = () => Math.random()
 ): Captured[] => [
   new Captured(
     new Criterion(
@@ -44,7 +46,7 @@ export const getRules: (
 
         capturingPlayerResearch.addAdvance(
           available.map((advance) => advance.constructor as typeof Advance)[
-            Math.floor(Math.random() * available.length)
+            Math.floor(randomNumberGenerator() * available.length)
           ]
         );
       }

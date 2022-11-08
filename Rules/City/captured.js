@@ -5,7 +5,7 @@ const PlayerResearchRegistry_1 = require("@civ-clone/core-science/PlayerResearch
 const Captured_1 = require("@civ-clone/core-city/Rules/Captured");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
-const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance) => [
+const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance, randomNumberGenerator = () => Math.random()) => [
     new Captured_1.default(new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
         .getByPlayer(player)
         .complete()
@@ -19,7 +19,7 @@ const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance) =>
             .getByPlayer(player)
             .complete()
             .filter((advance) => !capturingPlayerResearch.completed(advance.constructor));
-        capturingPlayerResearch.addAdvance(available.map((advance) => advance.constructor)[Math.floor(Math.random() * available.length)]);
+        capturingPlayerResearch.addAdvance(available.map((advance) => advance.constructor)[Math.floor(randomNumberGenerator() * available.length)]);
     })),
 ];
 exports.getRules = getRules;

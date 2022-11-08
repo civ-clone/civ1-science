@@ -101,7 +101,7 @@
     "@civ-clone/base-science-advance-university": "^0.1.0",
     "@civ-clone/base-science-advance-writing": "^0.1.0",
     "@civ-clone/core-city": "^0.1.0",
-    "@civ-clone/core-city-happiness": "github:civ-clone/core-city-happiness",
+    "@civ-clone/core-city-happiness": "^0.1.0",
     "@civ-clone/core-engine": "^0.1.0",
     "@civ-clone/core-player": "^0.1.0",
     "@civ-clone/core-registry": "^0.1.0",
