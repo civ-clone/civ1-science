@@ -1,7 +1,4 @@
-import {
-  CivilDisorder,
-  ICivilDisorderRegistry,
-} from '@civ-clone/core-city-happiness/Rules/CivilDisorder';
+import CivilDisorder from '@civ-clone/core-city-happiness/Rules/CivilDisorder';
 import {
   PlayerResearchRegistry,
   instance as playerResearchRegistryInstance,
@@ -28,7 +25,7 @@ export const getRules: (
     new Criterion((cityYield: Yield): boolean => cityYield instanceof Research),
     new Criterion(
       (cityYield: Yield, city: City, yields: Yield[]) =>
-        !(ruleRegistry as ICivilDisorderRegistry)
+        !ruleRegistry
           .get(CivilDisorder)
           .some((rule: CivilDisorder): boolean => rule.validate(city, yields))
     ),
