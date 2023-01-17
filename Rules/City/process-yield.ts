@@ -1,4 +1,3 @@
-import CivilDisorder from '@civ-clone/core-city-happiness/Rules/CivilDisorder';
 import {
   PlayerResearchRegistry,
   instance as playerResearchRegistryInstance,
@@ -8,6 +7,7 @@ import {
   instance as ruleRegistryInstance,
 } from '@civ-clone/core-rule/RuleRegistry';
 import City from '@civ-clone/core-city/City';
+import CivilDisorder from '@civ-clone/core-city-happiness/Rules/CivilDisorder';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import ProcessYield from '@civ-clone/core-city/Rules/ProcessYield';
@@ -26,8 +26,8 @@ export const getRules: (
     new Criterion(
       (cityYield: Yield, city: City, yields: Yield[]) =>
         !ruleRegistry
-          .get(CivilDisorder)
-          .some((rule: CivilDisorder): boolean => rule.validate(city, yields))
+          .process(CivilDisorder, city, yields)
+          .some((result: boolean): boolean => result)
     ),
     new Effect((cityYield: Yield, city: City): void =>
       playerResearchRegistry.getByPlayer(city.player()).add(cityYield)
