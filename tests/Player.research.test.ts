@@ -1,16 +1,15 @@
 import { expect, spy, use } from 'chai';
+import AdvanceRegistry from '@civ-clone/core-science/AdvanceRegistry';
+import { Alphabet } from '../Advances';
 import Engine from '@civ-clone/core-engine/Engine';
 import Player from '@civ-clone/core-player/Player';
+import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
+import { Research } from '@civ-clone/library-science/Yields';
 import RuleRegistry from '@civ-clone/core-rule/RuleRegistry';
 import complete from '../Rules/Research/complete';
 import { describe } from 'mocha';
 import started from '../Rules/Research/started';
 import * as spies from 'chai-spies';
-import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
-import AdvanceRegistry from '@civ-clone/core-science/AdvanceRegistry';
-import { Alphabet } from '../Advances';
-import Research from '@civ-clone/base-city-yield-research/Research';
-import exp = require('constants');
 
 use(spies);
 

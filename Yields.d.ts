@@ -1,1 +1,1 @@
-export { Research } from '@civ-clone/base-city-yield-research/Research';
+export { Research } from '@civ-clone/library-science/Yields';

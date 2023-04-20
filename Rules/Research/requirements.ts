@@ -134,7 +134,7 @@ export const getRules: () => Requirements[] = (): Requirements[] => [
       [Trade, CodeOfLaws, Currency],
       [University, Philosophy, Mathematics],
       [Writing, Alphabet],
-    ] as [typeof Advance, ...typeof Advance[]][]
+    ] as [typeof Advance, ...(typeof Advance)[]][]
   ).map(
     ([AdvanceWithRequirements, ...requiredAdvances]): Requirements =>
       new Requirements(

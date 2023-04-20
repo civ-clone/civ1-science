@@ -2017,83 +2017,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@civ-clone/civ1-science@workspace:."
   dependencies:
-    "@civ-clone/base-city-yield-research": ^0.1.0
-    "@civ-clone/base-science-advance-advancedflight": ^0.1.0
-    "@civ-clone/base-science-advance-alphabet": ^0.1.0
-    "@civ-clone/base-science-advance-astronomy": ^0.1.0
-    "@civ-clone/base-science-advance-atomictheory": ^0.1.0
-    "@civ-clone/base-science-advance-automobile": ^0.1.0
-    "@civ-clone/base-science-advance-banking": ^0.1.0
-    "@civ-clone/base-science-advance-bridgebuilding": ^0.1.0
-    "@civ-clone/base-science-advance-bronzeworking": ^0.1.0
-    "@civ-clone/base-science-advance-ceremonialburial": ^0.1.0
-    "@civ-clone/base-science-advance-chemistry": ^0.1.0
-    "@civ-clone/base-science-advance-chivalry": ^0.1.0
-    "@civ-clone/base-science-advance-codeoflaws": ^0.1.0
-    "@civ-clone/base-science-advance-combustion": ^0.1.0
-    "@civ-clone/base-science-advance-communism": ^0.1.0
-    "@civ-clone/base-science-advance-computers": ^0.1.0
-    "@civ-clone/base-science-advance-conscription": ^0.1.0
-    "@civ-clone/base-science-advance-construction": ^0.1.0
-    "@civ-clone/base-science-advance-corporation": ^0.1.0
-    "@civ-clone/base-science-advance-currency": ^0.1.0
-    "@civ-clone/base-science-advance-democracy": ^0.1.0
-    "@civ-clone/base-science-advance-electricity": ^0.1.0
-    "@civ-clone/base-science-advance-electronics": ^0.1.0
-    "@civ-clone/base-science-advance-engineering": ^0.1.0
-    "@civ-clone/base-science-advance-explosives": ^0.1.0
-    "@civ-clone/base-science-advance-feudalism": ^0.1.0
-    "@civ-clone/base-science-advance-flight": ^0.1.0
-    "@civ-clone/base-science-advance-fusionpower": ^0.1.0
-    "@civ-clone/base-science-advance-geneticengineering": ^0.1.0
-    "@civ-clone/base-science-advance-gunpowder": ^0.1.0
-    "@civ-clone/base-science-advance-horsebackriding": ^0.1.0
-    "@civ-clone/base-science-advance-industrialization": ^0.1.0
-    "@civ-clone/base-science-advance-invention": ^0.1.0
-    "@civ-clone/base-science-advance-ironworking": ^0.1.0
-    "@civ-clone/base-science-advance-laborunion": ^0.1.0
-    "@civ-clone/base-science-advance-literacy": ^0.1.0
-    "@civ-clone/base-science-advance-magnetism": ^0.1.0
-    "@civ-clone/base-science-advance-mapmaking": ^0.1.0
-    "@civ-clone/base-science-advance-masonry": ^0.1.0
-    "@civ-clone/base-science-advance-massproduction": ^0.1.0
-    "@civ-clone/base-science-advance-mathematics": ^0.1.0
-    "@civ-clone/base-science-advance-medicine": ^0.1.0
-    "@civ-clone/base-science-advance-metallurgy": ^0.1.0
-    "@civ-clone/base-science-advance-monarchy": ^0.1.0
-    "@civ-clone/base-science-advance-mysticism": ^0.1.0
-    "@civ-clone/base-science-advance-navigation": ^0.1.0
-    "@civ-clone/base-science-advance-nuclearfission": ^0.1.0
-    "@civ-clone/base-science-advance-nuclearpower": ^0.1.0
-    "@civ-clone/base-science-advance-philosophy": ^0.1.0
-    "@civ-clone/base-science-advance-physics": ^0.1.0
-    "@civ-clone/base-science-advance-plastics": ^0.1.0
-    "@civ-clone/base-science-advance-pottery": ^0.1.0
-    "@civ-clone/base-science-advance-railroad": ^0.1.0
-    "@civ-clone/base-science-advance-recycling": ^0.1.0
-    "@civ-clone/base-science-advance-refining": ^0.1.0
-    "@civ-clone/base-science-advance-religion": ^0.1.0
-    "@civ-clone/base-science-advance-robotics": ^0.1.0
-    "@civ-clone/base-science-advance-rocketry": ^0.1.0
-    "@civ-clone/base-science-advance-spaceflight": ^0.1.0
-    "@civ-clone/base-science-advance-steamengine": ^0.1.0
-    "@civ-clone/base-science-advance-steel": ^0.1.0
-    "@civ-clone/base-science-advance-superconductor": ^0.1.0
-    "@civ-clone/base-science-advance-theoryofgravity": ^0.1.0
-    "@civ-clone/base-science-advance-therepublic": ^0.1.0
-    "@civ-clone/base-science-advance-thewheel": ^0.1.0
-    "@civ-clone/base-science-advance-trade": ^0.1.0
-    "@civ-clone/base-science-advance-university": ^0.1.0
-    "@civ-clone/base-science-advance-writing": ^0.1.0
     "@civ-clone/civ1-city": "github:civ-clone/civ1-city"
     "@civ-clone/core-city": ^0.1.0
     "@civ-clone/core-city-happiness": ^0.1.0
+    "@civ-clone/core-client": ^0.1.0
     "@civ-clone/core-engine": ^0.1.0
     "@civ-clone/core-player": ^0.1.0
     "@civ-clone/core-registry": ^0.1.0
     "@civ-clone/core-rule": ^0.1.0
     "@civ-clone/core-science": ^0.1.0
     "@civ-clone/core-yield": ^0.1.0
+    "@civ-clone/library-science": ^0.1.0
     "@types/chai": ^4.0.0
     "@types/chai-spies": ^1.0.0
     "@types/mocha": ^8.0.0
@@ -2331,6 +2265,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@civ-clone/core-client@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "@civ-clone/core-client@npm:0.1.2"
+  dependencies:
+    "@civ-clone/core-civilization": ^0.1.0
+    "@civ-clone/core-data-object": ^0.1.0
+    "@civ-clone/core-player": ^0.1.0
+    "@civ-clone/core-registry": ^0.1.0
+  checksum: b4afd71c3fff6c004e3ec18970b20a68a4b2ac9a8b41935d5c89e1447eedf8218f7b48ff8f0ebcb3ad8fd805a7ff2732e11c0be3851e1ae86c542339e5cca5a2
+  languageName: node
+  linkType: hard
+
 "@civ-clone/core-data-object@npm:^0.1.0, @civ-clone/core-data-object@npm:^0.1.9":
   version: 0.1.9
   resolution: "@civ-clone/core-data-object@npm:0.1.9"
@@ -2542,6 +2488,82 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@civ-clone/library-science@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@civ-clone/library-science@npm:0.1.0"
+  dependencies:
+    "@civ-clone/base-city-yield-research": ^0.1.0
+    "@civ-clone/base-science-advance-advancedflight": ^0.1.0
+    "@civ-clone/base-science-advance-alphabet": ^0.1.0
+    "@civ-clone/base-science-advance-astronomy": ^0.1.0
+    "@civ-clone/base-science-advance-atomictheory": ^0.1.0
+    "@civ-clone/base-science-advance-automobile": ^0.1.0
+    "@civ-clone/base-science-advance-banking": ^0.1.0
+    "@civ-clone/base-science-advance-bridgebuilding": ^0.1.0
+    "@civ-clone/base-science-advance-bronzeworking": ^0.1.0
+    "@civ-clone/base-science-advance-ceremonialburial": ^0.1.0
+    "@civ-clone/base-science-advance-chemistry": ^0.1.0
+    "@civ-clone/base-science-advance-chivalry": ^0.1.0
+    "@civ-clone/base-science-advance-codeoflaws": ^0.1.0
+    "@civ-clone/base-science-advance-combustion": ^0.1.0
+    "@civ-clone/base-science-advance-communism": ^0.1.0
+    "@civ-clone/base-science-advance-computers": ^0.1.0
+    "@civ-clone/base-science-advance-conscription": ^0.1.0
+    "@civ-clone/base-science-advance-construction": ^0.1.0
+    "@civ-clone/base-science-advance-corporation": ^0.1.0
+    "@civ-clone/base-science-advance-currency": ^0.1.0
+    "@civ-clone/base-science-advance-democracy": ^0.1.0
+    "@civ-clone/base-science-advance-electricity": ^0.1.0
+    "@civ-clone/base-science-advance-electronics": ^0.1.0
+    "@civ-clone/base-science-advance-engineering": ^0.1.0
+    "@civ-clone/base-science-advance-explosives": ^0.1.0
+    "@civ-clone/base-science-advance-feudalism": ^0.1.0
+    "@civ-clone/base-science-advance-flight": ^0.1.0
+    "@civ-clone/base-science-advance-fusionpower": ^0.1.0
+    "@civ-clone/base-science-advance-geneticengineering": ^0.1.0
+    "@civ-clone/base-science-advance-gunpowder": ^0.1.0
+    "@civ-clone/base-science-advance-horsebackriding": ^0.1.0
+    "@civ-clone/base-science-advance-industrialization": ^0.1.0
+    "@civ-clone/base-science-advance-invention": ^0.1.0
+    "@civ-clone/base-science-advance-ironworking": ^0.1.0
+    "@civ-clone/base-science-advance-laborunion": ^0.1.0
+    "@civ-clone/base-science-advance-literacy": ^0.1.0
+    "@civ-clone/base-science-advance-magnetism": ^0.1.0
+    "@civ-clone/base-science-advance-mapmaking": ^0.1.0
+    "@civ-clone/base-science-advance-masonry": ^0.1.0
+    "@civ-clone/base-science-advance-massproduction": ^0.1.0
+    "@civ-clone/base-science-advance-mathematics": ^0.1.0
+    "@civ-clone/base-science-advance-medicine": ^0.1.0
+    "@civ-clone/base-science-advance-metallurgy": ^0.1.0
+    "@civ-clone/base-science-advance-monarchy": ^0.1.0
+    "@civ-clone/base-science-advance-mysticism": ^0.1.0
+    "@civ-clone/base-science-advance-navigation": ^0.1.0
+    "@civ-clone/base-science-advance-nuclearfission": ^0.1.0
+    "@civ-clone/base-science-advance-nuclearpower": ^0.1.0
+    "@civ-clone/base-science-advance-philosophy": ^0.1.0
+    "@civ-clone/base-science-advance-physics": ^0.1.0
+    "@civ-clone/base-science-advance-plastics": ^0.1.0
+    "@civ-clone/base-science-advance-pottery": ^0.1.0
+    "@civ-clone/base-science-advance-railroad": ^0.1.0
+    "@civ-clone/base-science-advance-recycling": ^0.1.0
+    "@civ-clone/base-science-advance-refining": ^0.1.0
+    "@civ-clone/base-science-advance-religion": ^0.1.0
+    "@civ-clone/base-science-advance-robotics": ^0.1.0
+    "@civ-clone/base-science-advance-rocketry": ^0.1.0
+    "@civ-clone/base-science-advance-spaceflight": ^0.1.0
+    "@civ-clone/base-science-advance-steamengine": ^0.1.0
+    "@civ-clone/base-science-advance-steel": ^0.1.0
+    "@civ-clone/base-science-advance-superconductor": ^0.1.0
+    "@civ-clone/base-science-advance-theoryofgravity": ^0.1.0
+    "@civ-clone/base-science-advance-therepublic": ^0.1.0
+    "@civ-clone/base-science-advance-thewheel": ^0.1.0
+    "@civ-clone/base-science-advance-trade": ^0.1.0
+    "@civ-clone/base-science-advance-university": ^0.1.0
+    "@civ-clone/base-science-advance-writing": ^0.1.0
+  checksum: 4d329f5e1e36ed16dfb93467624a83cb1be66d4279c3c52bd4e5c5adfc93bb3de1936df6972ea1be5ed59ec00f5636bd8e66deecded7d94921d0cdf19c689c36
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -2699,13 +2721,13 @@ __metadata:
   linkType: hard
 
 "agentkeepalive@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "agentkeepalive@npm:4.2.1"
+  version: 4.3.0
+  resolution: "agentkeepalive@npm:4.3.0"
   dependencies:
     debug: ^4.1.0
-    depd: ^1.1.2
+    depd: ^2.0.0
     humanize-ms: ^1.2.1
-  checksum: 39cb49ed8cf217fd6da058a92828a0a84e0b74c35550f82ee0a10e1ee403c4b78ade7948be2279b188b7a7303f5d396ea2738b134731e464bf28de00a4f72a18
+  checksum: 982453aa44c11a06826c836025e5162c846e1200adb56f2d075400da7d32d87021b3b0a58768d949d824811f5654223d5a8a3dad120921a2439625eb847c6260
   languageName: node
   linkType: hard
 
@@ -2743,12 +2765,12 @@ __metadata:
   linkType: hard
 
 "anymatch@npm:~3.1.2":
-  version: 3.1.2
-  resolution: "anymatch@npm:3.1.2"
+  version: 3.1.3
+  resolution: "anymatch@npm:3.1.3"
   dependencies:
     normalize-path: ^3.0.0
     picomatch: ^2.0.4
-  checksum: 985163db2292fac9e5a1e072bf99f1b5baccf196e4de25a0b0b81865ebddeb3b3eb4480734ef0a2ac8c002845396b91aa89121f5b84f93981a4658164a9ec6e9
+  checksum: 3e044fd6d1d26545f235a9fe4d7a534e2029d8e59fa7fd9f2a6eb21230f6b5380ea1eaf55136e60cbf8e613544b3b766e7a6fa2102e2a3a117505466e3025dc2
   languageName: node
   linkType: hard
 
@@ -2847,8 +2869,8 @@ __metadata:
   linkType: hard
 
 "c8@npm:^7.0.0":
-  version: 7.12.0
-  resolution: "c8@npm:7.12.0"
+  version: 7.13.0
+  resolution: "c8@npm:7.13.0"
   dependencies:
     "@bcoe/v8-coverage": ^0.2.3
     "@istanbuljs/schema": ^0.1.3
@@ -2864,7 +2886,7 @@ __metadata:
     yargs-parser: ^20.2.9
   bin:
     c8: bin/c8.js
-  checksum: 3b7fa9ad7cff2cb0bb579467e6b544498fbd46e9353a809ad3b8cf749df4beadd074cde277356b0552f3c8055b1b3ec3ebaf2209e9ad4bdefed92dbf64d283ab
+  checksum: 491abf4cf3097cdcfd24dbac49162f1383861c22c77fdd9280bcd38240e1e07d2c6a59da5d4df59a61a8204e2fc297d31fd526e495faf8d2f20dcc12a37b144c
   languageName: node
   linkType: hard
 
@@ -3075,11 +3097,11 @@ __metadata:
   linkType: hard
 
 "deep-eql@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "deep-eql@npm:4.1.2"
+  version: 4.1.3
+  resolution: "deep-eql@npm:4.1.3"
   dependencies:
     type-detect: ^4.0.0
-  checksum: 1832456c5f6a59d6ef6f0b925d4c75c30ef9582bc9a884c8c2475844d31febafefc5b3ff129cf95d14a3f450b7c1dfb52e597fad849653d8a123bbbb21d9fc3e
+  checksum: 7f6d30cb41c713973dc07eaadded848b2ab0b835e518a88b91bea72f34e08c4c71d167a722a6f302d3a6108f05afd8e6d7650689a84d5d29ec7fe6220420397f
   languageName: node
   linkType: hard
 
@@ -3090,10 +3112,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"depd@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "depd@npm:1.1.2"
-  checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
+"depd@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "depd@npm:2.0.0"
+  checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
   languageName: node
   linkType: hard
 
@@ -3309,9 +3331,9 @@ __metadata:
   linkType: hard
 
 "graceful-fs@npm:^4.2.6":
-  version: 4.2.10
-  resolution: "graceful-fs@npm:4.2.10"
-  checksum: 3f109d70ae123951905d85032ebeae3c2a5a7a997430df00ea30df0e3a6c60cf6689b109654d6fdacd28810a053348c4d14642da1d075049e6be1ba5216218da
+  version: 4.2.11
+  resolution: "graceful-fs@npm:4.2.11"
+  checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
   languageName: node
   linkType: hard
 
@@ -3353,9 +3375,9 @@ __metadata:
   linkType: hard
 
 "http-cache-semantics@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "http-cache-semantics@npm:4.1.0"
-  checksum: 974de94a81c5474be07f269f9fd8383e92ebb5a448208223bfb39e172a9dbc26feff250192ecc23b9593b3f92098e010406b0f24bd4d588d631f80214648ed42
+  version: 4.1.1
+  resolution: "http-cache-semantics@npm:4.1.1"
+  checksum: 83ac0bc60b17a3a36f9953e7be55e5c8f41acc61b22583060e8dedc9dd5e3607c823a88d0926f9150e571f90946835c7fe150732801010845c72cd8bbff1a236
   languageName: node
   linkType: hard
 
@@ -3549,14 +3571,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "json5@npm:1.0.1"
+"json5@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "json5@npm:1.0.2"
   dependencies:
     minimist: ^1.2.0
   bin:
     json5: lib/cli.js
-  checksum: e76ea23dbb8fc1348c143da628134a98adf4c5a4e8ea2adaa74a80c455fc2cdf0e2e13e6398ef819bfe92306b610ebb2002668ed9fc1af386d593691ef346fc3
+  checksum: 866458a8c58a95a49bef3adba929c625e82532bcff1fe93f01d29cb02cac7c3fe1f4b79951b7792c2da9de0b32871a8401a6e3c5b36778ad852bf5b8a61165d7
   languageName: node
   linkType: hard
 
@@ -3598,9 +3620,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^7.7.1":
-  version: 7.14.1
-  resolution: "lru-cache@npm:7.14.1"
-  checksum: d72c6713c6a6d86836a7a6523b3f1ac6764768cca47ec99341c3e76db06aacd4764620e5e2cda719a36848785a52a70e531822dc2b33fb071fa709683746c104
+  version: 7.18.3
+  resolution: "lru-cache@npm:7.18.3"
+  checksum: e550d772384709deea3f141af34b6d4fa392e2e418c1498c078de0ee63670f1f46f5eee746e8ef7e69e1c895af0d4224e62ee33e66a543a14763b0f2e74c1356
   languageName: node
   linkType: hard
 
@@ -3663,18 +3685,18 @@ __metadata:
   linkType: hard
 
 "minimatch@npm:^5.0.1":
-  version: 5.1.4
-  resolution: "minimatch@npm:5.1.4"
+  version: 5.1.6
+  resolution: "minimatch@npm:5.1.6"
   dependencies:
     brace-expansion: ^2.0.1
-  checksum: 0de6d7d154e70d12487b30a7bfcb74bd15fd1f1ec007a2516699ba76e63f78ca2e5016c200b242ed75123aff8dcccf49947f71b629fb1b1f221c8e76a13ed8de
+  checksum: 7564208ef81d7065a370f788d337cd80a689e981042cb9a1d0e6580b6c6a8c9279eba80010516e258835a988363f99f54a6f711a315089b8b42694f5da9d0d77
   languageName: node
   linkType: hard
 
 "minimist@npm:^1.2.0, minimist@npm:^1.2.6":
-  version: 1.2.7
-  resolution: "minimist@npm:1.2.7"
-  checksum: 7346574a1038ca23c32e02252f603801f09384dd1d78b69a943a4e8c2c28730b80e96193882d3d3b22a063445f460e48316b29b8a25addca2d7e5e8f75478bec
+  version: 1.2.8
+  resolution: "minimist@npm:1.2.8"
+  checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
   languageName: node
   linkType: hard
 
@@ -3739,11 +3761,9 @@ __metadata:
   linkType: hard
 
 "minipass@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "minipass@npm:4.0.0"
-  dependencies:
-    yallist: ^4.0.0
-  checksum: 7a609afbf394abfcf9c48e6c90226f471676c8f2a67f07f6838871afb03215ede431d1433feffe1b855455bcb13ef0eb89162841b9796109d6fed8d89790f381
+  version: 4.2.8
+  resolution: "minipass@npm:4.2.8"
+  checksum: 7f4914d5295a9a30807cae5227a37a926e6d910c03f315930fde52332cf0575dfbc20295318f91f0baf0e6bb11a6f668e30cde8027dea7a11b9d159867a3c830
   languageName: node
   linkType: hard
 
@@ -3964,11 +3984,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^2.0.0":
-  version: 2.7.1
-  resolution: "prettier@npm:2.7.1"
+  version: 2.8.7
+  resolution: "prettier@npm:2.8.7"
   bin:
     prettier: bin-prettier.js
-  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
+  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
   languageName: node
   linkType: hard
 
@@ -3999,13 +4019,13 @@ __metadata:
   linkType: hard
 
 "readable-stream@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "readable-stream@npm:3.6.0"
+  version: 3.6.2
+  resolution: "readable-stream@npm:3.6.2"
   dependencies:
     inherits: ^2.0.3
     string_decoder: ^1.1.1
     util-deprecate: ^1.0.1
-  checksum: d4ea81502d3799439bb955a3a5d1d808592cf3133350ed352aeaa499647858b27b1c4013984900238b0873ec8d0d8defce72469fb7a83e61d53f5ad61cb80dc8
+  checksum: bdcbe6c22e846b6af075e32cf8f4751c2576238c5043169a1c221c92ee2878458a816a4ea33f4c67623c0b6827c8a400409bfb3cf0bf3381392d0b1dfb52ac8d
   languageName: node
   linkType: hard
 
@@ -4067,13 +4087,13 @@ __metadata:
   linkType: hard
 
 "semver@npm:^7.3.5":
-  version: 7.3.8
-  resolution: "semver@npm:7.3.8"
+  version: 7.5.0
+  resolution: "semver@npm:7.5.0"
   dependencies:
     lru-cache: ^6.0.0
   bin:
     semver: bin/semver.js
-  checksum: ba9c7cbbf2b7884696523450a61fee1a09930d888b7a8d7579025ad93d459b2d1949ee5bbfeb188b2be5f4ac163544c5e98491ad6152df34154feebc2cc337c1
+  checksum: 2d266937756689a76f124ffb4c1ea3e1bbb2b263219f90ada8a11aebebe1280b13bb76cca2ca96bdee3dbc554cbc0b24752eb895b2a51577aa644427e9229f2b
   languageName: node
   linkType: hard
 
@@ -4301,14 +4321,14 @@ __metadata:
   linkType: hard
 
 "tsconfig-paths@npm:^3.5.0":
-  version: 3.14.1
-  resolution: "tsconfig-paths@npm:3.14.1"
+  version: 3.14.2
+  resolution: "tsconfig-paths@npm:3.14.2"
   dependencies:
     "@types/json5": ^0.0.29
-    json5: ^1.0.1
+    json5: ^1.0.2
     minimist: ^1.2.6
     strip-bom: ^3.0.0
-  checksum: 8afa01c673ebb4782ba53d3a12df97fa837ce524f8ad38ee4e2b2fd57f5ac79abc21c574e9e9eb014d93efe7fe8214001b96233b5c6ea75bd1ea82afe17a4c6d
+  checksum: a6162eaa1aed680537f93621b82399c7856afd10ec299867b13a0675e981acac4e0ec00896860480efc59fc10fd0b16fdc928c0b885865b52be62cadac692447
   languageName: node
   linkType: hard
 
@@ -4320,22 +4340,22 @@ __metadata:
   linkType: hard
 
 "typescript@npm:^4.0.0":
-  version: 4.8.4
-  resolution: "typescript@npm:4.8.4"
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3e4f061658e0c8f36c820802fa809e0fd812b85687a9a2f5430bc3d0368e37d1c9605c3ce9b39df9a05af2ece67b1d844f9f6ea8ff42819f13bcb80f85629af0
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@^4.0.0#~builtin<compat/typescript>":
-  version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=0102e9"
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
+  checksum: 2eee5c37cad4390385db5db5a8e81470e42e8f1401b0358d7390095d6f681b410f2c4a0c496c6ff9ebd775423c7785cdace7bcdad76c7bee283df3d9718c0f20
   languageName: node
   linkType: hard
 
@@ -4365,13 +4385,13 @@ __metadata:
   linkType: hard
 
 "v8-to-istanbul@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "v8-to-istanbul@npm:9.0.1"
+  version: 9.1.0
+  resolution: "v8-to-istanbul@npm:9.1.0"
   dependencies:
     "@jridgewell/trace-mapping": ^0.3.12
     "@types/istanbul-lib-coverage": ^2.0.1
     convert-source-map: ^1.6.0
-  checksum: a49c34bf0a3af0c11041a3952a2600913904a983bd1bc87148b5c033bc5c1d02d5a13620fcdbfa2c60bc582a2e2970185780f0c844b4c3a220abf405f8af6311
+  checksum: 2069d59ee46cf8d83b4adfd8a5c1a90834caffa9f675e4360f1157ffc8578ef0f763c8f32d128334424159bb6b01f3876acd39cd13297b2769405a9da241f8d1
   languageName: node
   linkType: hard
 

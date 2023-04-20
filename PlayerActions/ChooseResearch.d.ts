@@ -1,3 +1,3 @@
-import MandatoryPlayerAction from '@civ-clone/core-player/MandatoryPlayerAction';
-export declare class ChooseResearch extends MandatoryPlayerAction {}
+export { ChooseResearch } from '@civ-clone/library-science/PlayerActions/ChooseResearch';
+import { ChooseResearch } from '@civ-clone/library-science/PlayerActions/ChooseResearch';
 export default ChooseResearch;

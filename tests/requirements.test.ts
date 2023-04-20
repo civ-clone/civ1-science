@@ -81,7 +81,7 @@ describe('requirements', () => {
       Masonry,
       Pottery,
       TheWheel,
-    ] as typeof Advance[]
+    ] as (typeof Advance)[]
   ).forEach((TestAdvance: typeof Advance): void => {
     it(`should be possible to discover ${TestAdvance.name} without any prerequisites being discovered`, (): void => {
       const playerResearch = new PlayerResearch(
@@ -115,8 +115,8 @@ describe('requirements', () => {
       [Navigation, Astronomy, MapMaking],
       [TheRepublic, CodeOfLaws, Literacy],
       [Writing, Alphabet],
-    ] as typeof Advance[][]
-  ).forEach(([TestAdvance, ...Requirements]: typeof Advance[]): void => {
+    ] as (typeof Advance)[][]
+  ).forEach(([TestAdvance, ...Requirements]: (typeof Advance)[]): void => {
     it(`should only be possible to discover ${TestAdvance.name} once prerequisites have been discovered`, (): void => {
       const playerResearch = new PlayerResearch(
         player,

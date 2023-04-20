@@ -1,67 +1,69 @@
-export { AdvancedFlight } from '@civ-clone/base-science-advance-advancedflight/AdvancedFlight';
-export { Alphabet } from '@civ-clone/base-science-advance-alphabet/Alphabet';
-export { Astronomy } from '@civ-clone/base-science-advance-astronomy/Astronomy';
-export { AtomicTheory } from '@civ-clone/base-science-advance-atomictheory/AtomicTheory';
-export { Automobile } from '@civ-clone/base-science-advance-automobile/Automobile';
-export { Banking } from '@civ-clone/base-science-advance-banking/Banking';
-export { BridgeBuilding } from '@civ-clone/base-science-advance-bridgebuilding/BridgeBuilding';
-export { BronzeWorking } from '@civ-clone/base-science-advance-bronzeworking/BronzeWorking';
-export { CeremonialBurial } from '@civ-clone/base-science-advance-ceremonialburial/CeremonialBurial';
-export { Chemistry } from '@civ-clone/base-science-advance-chemistry/Chemistry';
-export { Chivalry } from '@civ-clone/base-science-advance-chivalry/Chivalry';
-export { CodeOfLaws } from '@civ-clone/base-science-advance-codeoflaws/CodeOfLaws';
-export { Combustion } from '@civ-clone/base-science-advance-combustion/Combustion';
-export { Communism } from '@civ-clone/base-science-advance-communism/Communism';
-export { Computers } from '@civ-clone/base-science-advance-computers/Computers';
-export { Conscription } from '@civ-clone/base-science-advance-conscription/Conscription';
-export { Construction } from '@civ-clone/base-science-advance-construction/Construction';
-export { Corporation } from '@civ-clone/base-science-advance-corporation/Corporation';
-export { Currency } from '@civ-clone/base-science-advance-currency/Currency';
-export { Democracy } from '@civ-clone/base-science-advance-democracy/Democracy';
-export { Electricity } from '@civ-clone/base-science-advance-electricity/Electricity';
-export { Electronics } from '@civ-clone/base-science-advance-electronics/Electronics';
-export { Engineering } from '@civ-clone/base-science-advance-engineering/Engineering';
-export { Explosives } from '@civ-clone/base-science-advance-explosives/Explosives';
-export { Feudalism } from '@civ-clone/base-science-advance-feudalism/Feudalism';
-export { Flight } from '@civ-clone/base-science-advance-flight/Flight';
-export { FusionPower } from '@civ-clone/base-science-advance-fusionpower/FusionPower';
-export { GeneticEngineering } from '@civ-clone/base-science-advance-geneticengineering/GeneticEngineering';
-export { Gunpowder } from '@civ-clone/base-science-advance-gunpowder/Gunpowder';
-export { HorsebackRiding } from '@civ-clone/base-science-advance-horsebackriding/HorsebackRiding';
-export { Industrialization } from '@civ-clone/base-science-advance-industrialization/Industrialization';
-export { Invention } from '@civ-clone/base-science-advance-invention/Invention';
-export { IronWorking } from '@civ-clone/base-science-advance-ironworking/IronWorking';
-export { LaborUnion } from '@civ-clone/base-science-advance-laborunion/LaborUnion';
-export { Literacy } from '@civ-clone/base-science-advance-literacy/Literacy';
-export { Magnetism } from '@civ-clone/base-science-advance-magnetism/Magnetism';
-export { MapMaking } from '@civ-clone/base-science-advance-mapmaking/MapMaking';
-export { Masonry } from '@civ-clone/base-science-advance-masonry/Masonry';
-export { MassProduction } from '@civ-clone/base-science-advance-massproduction/MassProduction';
-export { Mathematics } from '@civ-clone/base-science-advance-mathematics/Mathematics';
-export { Medicine } from '@civ-clone/base-science-advance-medicine/Medicine';
-export { Metallurgy } from '@civ-clone/base-science-advance-metallurgy/Metallurgy';
-export { Monarchy } from '@civ-clone/base-science-advance-monarchy/Monarchy';
-export { Mysticism } from '@civ-clone/base-science-advance-mysticism/Mysticism';
-export { Navigation } from '@civ-clone/base-science-advance-navigation/Navigation';
-export { NuclearFission } from '@civ-clone/base-science-advance-nuclearfission/NuclearFission';
-export { NuclearPower } from '@civ-clone/base-science-advance-nuclearpower/NuclearPower';
-export { Philosophy } from '@civ-clone/base-science-advance-philosophy/Philosophy';
-export { Physics } from '@civ-clone/base-science-advance-physics/Physics';
-export { Plastics } from '@civ-clone/base-science-advance-plastics/Plastics';
-export { Pottery } from '@civ-clone/base-science-advance-pottery/Pottery';
-export { Railroad } from '@civ-clone/base-science-advance-railroad/Railroad';
-export { Recycling } from '@civ-clone/base-science-advance-recycling/Recycling';
-export { Refining } from '@civ-clone/base-science-advance-refining/Refining';
-export { Religion } from '@civ-clone/base-science-advance-religion/Religion';
-export { Robotics } from '@civ-clone/base-science-advance-robotics/Robotics';
-export { Rocketry } from '@civ-clone/base-science-advance-rocketry/Rocketry';
-export { SpaceFlight } from '@civ-clone/base-science-advance-spaceflight/SpaceFlight';
-export { SteamEngine } from '@civ-clone/base-science-advance-steamengine/SteamEngine';
-export { Steel } from '@civ-clone/base-science-advance-steel/Steel';
-export { Superconductor } from '@civ-clone/base-science-advance-superconductor/Superconductor';
-export { TheRepublic } from '@civ-clone/base-science-advance-therepublic/TheRepublic';
-export { TheWheel } from '@civ-clone/base-science-advance-thewheel/TheWheel';
-export { TheoryOfGravity } from '@civ-clone/base-science-advance-theoryofgravity/TheoryOfGravity';
-export { Trade } from '@civ-clone/base-science-advance-trade/Trade';
-export { University } from '@civ-clone/base-science-advance-university/University';
-export { Writing } from '@civ-clone/base-science-advance-writing/Writing';
+export {
+  AdvancedFlight,
+  Alphabet,
+  Astronomy,
+  AtomicTheory,
+  Automobile,
+  Banking,
+  BridgeBuilding,
+  BronzeWorking,
+  CeremonialBurial,
+  Chemistry,
+  Chivalry,
+  CodeOfLaws,
+  Combustion,
+  Communism,
+  Computers,
+  Conscription,
+  Construction,
+  Corporation,
+  Currency,
+  Democracy,
+  Electricity,
+  Electronics,
+  Engineering,
+  Explosives,
+  Feudalism,
+  Flight,
+  FusionPower,
+  GeneticEngineering,
+  Gunpowder,
+  HorsebackRiding,
+  Industrialization,
+  Invention,
+  IronWorking,
+  LaborUnion,
+  Literacy,
+  Magnetism,
+  MapMaking,
+  Masonry,
+  MassProduction,
+  Mathematics,
+  Medicine,
+  Metallurgy,
+  Monarchy,
+  Mysticism,
+  Navigation,
+  NuclearFission,
+  NuclearPower,
+  Philosophy,
+  Physics,
+  Plastics,
+  Pottery,
+  Railroad,
+  Recycling,
+  Refining,
+  Religion,
+  Robotics,
+  Rocketry,
+  SpaceFlight,
+  SteamEngine,
+  Steel,
+  Superconductor,
+  TheRepublic,
+  TheWheel,
+  TheoryOfGravity,
+  Trade,
+  University,
+  Writing,
+} from '@civ-clone/library-science/Advances';
