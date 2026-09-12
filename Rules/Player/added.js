@@ -7,7 +7,8 @@ const RuleRegistry_1 = require("@civ-clone/core-rule/RuleRegistry");
 const Added_1 = require("@civ-clone/core-player/Rules/Added");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const PlayerResearch_1 = require("@civ-clone/core-science/PlayerResearch");
-const getRules = (advanceRegistry = AdvanceRegistry_1.instance, playerResearchRegistry = PlayerResearchRegistry_1.instance, ruleRegistry = RuleRegistry_1.instance, randomNumberGenerator = () => Math.random()) => [
+const core_random_1 = require("@civ-clone/core-random");
+const getRules = (advanceRegistry = AdvanceRegistry_1.instance, playerResearchRegistry = PlayerResearchRegistry_1.instance, ruleRegistry = RuleRegistry_1.instance, randomNumberGenerator = core_random_1.instance) => [
     new Added_1.default(new Effect_1.default((player) => playerResearchRegistry.register(new PlayerResearch_1.default(player, advanceRegistry, ruleRegistry)))),
     new Added_1.default(new Effect_1.default((player) => {
         const playerResearch = playerResearchRegistry.getByPlayer(player);

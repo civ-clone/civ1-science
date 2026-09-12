@@ -14,6 +14,7 @@ import Added from '@civ-clone/core-player/Rules/Added';
 import Effect from '@civ-clone/core-rule/Effect';
 import Player from '@civ-clone/core-player/Player';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
+import { instance as rngInstance } from '@civ-clone/core-random';
 
 export const getRules: (
   advanceRegistry?: AdvanceRegistry,
@@ -24,7 +25,7 @@ export const getRules: (
   advanceRegistry: AdvanceRegistry = advanceRegistryInstance,
   playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance,
   ruleRegistry: RuleRegistry = ruleRegistryInstance,
-  randomNumberGenerator: () => number = () => Math.random()
+  randomNumberGenerator: () => number = rngInstance
 ): Added[] => [
   new Added(
     new Effect((player: Player): void =>

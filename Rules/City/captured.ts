@@ -13,6 +13,7 @@ import City from '@civ-clone/core-city/City';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import Player from '@civ-clone/core-player/Player';
+import { instance as rngInstance } from '@civ-clone/core-random';
 
 declare global {
   interface ChoiceMetaDataMap {
@@ -22,7 +23,7 @@ declare global {
 
 export const getRules = (
   playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance,
-  randomNumberGenerator: () => number = () => Math.random(),
+  randomNumberGenerator: () => number = rngInstance,
   clientRegistry: ClientRegistry = clientRegistryInstance
 ): Captured[] => [
   new Captured(

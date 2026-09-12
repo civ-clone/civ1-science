@@ -7,7 +7,8 @@ const Captured_1 = require("@civ-clone/core-city/Rules/Captured");
 const ChoiceMeta_1 = require("@civ-clone/core-client/ChoiceMeta");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
-const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance, randomNumberGenerator = () => Math.random(), clientRegistry = ClientRegistry_1.instance) => [
+const core_random_1 = require("@civ-clone/core-random");
+const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance, randomNumberGenerator = core_random_1.instance, clientRegistry = ClientRegistry_1.instance) => [
     new Captured_1.default(new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
         .getByPlayer(player)
         .complete()
