@@ -67,7 +67,7 @@ const getRules = () => [
         [Advances_1.Trade, Advances_1.CodeOfLaws, Advances_1.Currency],
         [Advances_1.University, Advances_1.Philosophy, Advances_1.Mathematics],
         [Advances_1.Writing, Advances_1.Alphabet],
-    ].map(([AdvanceWithRequirements, ...requiredAdvances]) => new Requirements_1.default(new Criterion_1.default((CheckAdvance) => CheckAdvance === AdvanceWithRequirements), new Effect_1.default((CheckAdvance, discoveredAdvances) => requiredAdvances.every((RequiredAdvance) => discoveredAdvances.some((advance) => advance instanceof RequiredAdvance))))),
+    ].map(([AdvanceWithRequirements, ...requiredAdvances]) => new Requirements_1.default(`civ1-science:research/requirements/${AdvanceWithRequirements.name}`, new Criterion_1.default((CheckAdvance) => CheckAdvance === AdvanceWithRequirements), new Effect_1.default((CheckAdvance, discoveredAdvances) => requiredAdvances.every((RequiredAdvance) => discoveredAdvances.some((advance) => advance instanceof RequiredAdvance))))),
 ];
 exports.getRules = getRules;
 exports.default = exports.getRules;

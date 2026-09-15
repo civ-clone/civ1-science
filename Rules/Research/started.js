@@ -5,7 +5,7 @@ const Engine_1 = require("@civ-clone/core-engine/Engine");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const Started_1 = require("@civ-clone/core-science/Rules/Started");
 const getRules = (engine = Engine_1.instance) => [
-    new Started_1.default(new Effect_1.default((playerResearch, AdvanceToResearch) => {
+    new Started_1.default('civ1-science:research/started/emit', new Effect_1.default((playerResearch, AdvanceToResearch) => {
         engine.emit('player:research', playerResearch, AdvanceToResearch);
     })),
 ];

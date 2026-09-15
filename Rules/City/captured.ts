@@ -27,6 +27,7 @@ export const getRules = (
   clientRegistry: ClientRegistry = clientRegistryInstance
 ): Captured[] => [
   new Captured(
+    'civ1-science:city/captured/steal-advance',
     new Criterion(
       (capturedCity: City, capturingPlayer: Player, player: Player): boolean =>
         playerResearchRegistry

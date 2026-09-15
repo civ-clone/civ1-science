@@ -5,7 +5,7 @@ const Cost_1 = require("@civ-clone/core-science/Rules/Cost");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 // see: https://forums.civfanatics.com/threads/how-many-bulbs-need-for-the-current-tech.376195/#post-13810088
 const getRules = () => [
-    new Cost_1.default(new Effect_1.default((CostAdvance, playerResearch) => (playerResearch.complete().length + 1) *
+    new Cost_1.default('civ1-science:research/cost/by-advances-known', new Effect_1.default((CostAdvance, playerResearch) => (playerResearch.complete().length + 1) *
         (6 +
             2 *
                 // playerResearch.player()

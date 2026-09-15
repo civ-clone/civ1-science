@@ -9,7 +9,7 @@ const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const core_random_1 = require("@civ-clone/core-random");
 const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance, randomNumberGenerator = core_random_1.instance, clientRegistry = ClientRegistry_1.instance) => [
-    new Captured_1.default(new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
+    new Captured_1.default('civ1-science:city/captured/steal-advance', new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
         .getByPlayer(player)
         .complete()
         .some((advance) => !playerResearchRegistry

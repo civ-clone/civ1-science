@@ -11,6 +11,7 @@ export const getRules: (engine?: Engine) => Complete[] = (
   engine: Engine = engineInstance
 ): Complete[] => [
   new Complete(
+    'civ1-science:research/complete/emit',
     new Effect((playerResearch: PlayerResearch, advance: Advance): void => {
       engine.emit('player:research-complete', playerResearch, advance);
     })

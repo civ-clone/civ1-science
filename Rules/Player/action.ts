@@ -15,6 +15,7 @@ export const getRules: (
   playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance
 ): Action[] => [
   new Action(
+    'civ1-science:player/action/choose-research',
     new Criterion(
       (player: Player): boolean =>
         playerResearchRegistry.getByPlayer(player).researching() === null

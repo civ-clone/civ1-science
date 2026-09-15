@@ -28,6 +28,7 @@ export const getRules: (
   randomNumberGenerator: () => number = rngInstance
 ): Added[] => [
   new Added(
+    'civ1-science:player/added/register-player-research',
     new Effect((player: Player): void =>
       playerResearchRegistry.register(
         new PlayerResearch(player, advanceRegistry, ruleRegistry)
@@ -35,6 +36,7 @@ export const getRules: (
     )
   ),
   new Added(
+    'civ1-science:player/added/starting-advances',
     new Effect((player: Player): void => {
       const playerResearch = playerResearchRegistry.getByPlayer(player);
 

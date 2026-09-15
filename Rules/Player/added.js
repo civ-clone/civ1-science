@@ -9,8 +9,8 @@ const Effect_1 = require("@civ-clone/core-rule/Effect");
 const PlayerResearch_1 = require("@civ-clone/core-science/PlayerResearch");
 const core_random_1 = require("@civ-clone/core-random");
 const getRules = (advanceRegistry = AdvanceRegistry_1.instance, playerResearchRegistry = PlayerResearchRegistry_1.instance, ruleRegistry = RuleRegistry_1.instance, randomNumberGenerator = core_random_1.instance) => [
-    new Added_1.default(new Effect_1.default((player) => playerResearchRegistry.register(new PlayerResearch_1.default(player, advanceRegistry, ruleRegistry)))),
-    new Added_1.default(new Effect_1.default((player) => {
+    new Added_1.default('civ1-science:player/added/register-player-research', new Effect_1.default((player) => playerResearchRegistry.register(new PlayerResearch_1.default(player, advanceRegistry, ruleRegistry)))),
+    new Added_1.default('civ1-science:player/added/starting-advances', new Effect_1.default((player) => {
         const playerResearch = playerResearchRegistry.getByPlayer(player);
         for (let i = 0, max = Math.min(playerResearch.available().length, Math.floor(4 * randomNumberGenerator())); i < max; i++) {
             const available = playerResearch.available();

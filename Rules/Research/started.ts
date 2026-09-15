@@ -11,6 +11,7 @@ export const getRules: (engine?: Engine) => Started[] = (
   engine: Engine = engineInstance
 ): Started[] => [
   new Started(
+    'civ1-science:research/started/emit',
     new Effect(
       (
         playerResearch: PlayerResearch,

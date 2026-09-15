@@ -6,6 +6,7 @@ import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
 // see: https://forums.civfanatics.com/threads/how-many-bulbs-need-for-the-current-tech.376195/#post-13810088
 export const getRules: () => Cost[] = (): Cost[] => [
   new Cost(
+    'civ1-science:research/cost/by-advances-known',
     new Effect(
       (CostAdvance: typeof Advance, playerResearch: PlayerResearch): number =>
         (playerResearch.complete().length + 1) *

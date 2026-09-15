@@ -22,6 +22,7 @@ export const getRules: (
   ruleRegistry: RuleRegistry = ruleRegistryInstance
 ): ProcessYield[] => [
   new ProcessYield(
+    'civ1-science:city/process-yield/add-research',
     new Criterion((cityYield: Yield): boolean => cityYield instanceof Research),
     new Criterion(
       (cityYield: Yield, city: City, yields: Yield[]) =>

@@ -138,6 +138,7 @@ export const getRules: () => Requirements[] = (): Requirements[] => [
   ).map(
     ([AdvanceWithRequirements, ...requiredAdvances]): Requirements =>
       new Requirements(
+        `civ1-science:research/requirements/${AdvanceWithRequirements.name}`,
         new Criterion(
           (CheckAdvance: typeof Advance): boolean =>
             CheckAdvance === AdvanceWithRequirements
