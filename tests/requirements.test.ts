@@ -110,7 +110,7 @@ describe('requirements', () => {
       [Literacy, CodeOfLaws, Writing],
       [MapMaking, Alphabet],
       [Mathematics, Alphabet, Masonry],
-      [Monarchy, CodeOfLaws, Mysticism],
+      [Monarchy, CeremonialBurial, CodeOfLaws],
       [Mysticism, CeremonialBurial],
       [Navigation, Astronomy, MapMaking],
       [TheRepublic, CodeOfLaws, Literacy],

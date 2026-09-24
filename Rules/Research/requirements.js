@@ -44,7 +44,7 @@ const getRules = () => [
         [Advances_1.Mathematics, Advances_1.Alphabet, Advances_1.Masonry],
         [Advances_1.Medicine, Advances_1.Philosophy, Advances_1.Trade],
         [Advances_1.Metallurgy, Advances_1.Gunpowder, Advances_1.University],
-        [Advances_1.Monarchy, Advances_1.CodeOfLaws, Advances_1.Mysticism],
+        [Advances_1.Monarchy, Advances_1.CeremonialBurial, Advances_1.CodeOfLaws],
         [Advances_1.Mysticism, Advances_1.CeremonialBurial],
         [Advances_1.Navigation, Advances_1.Astronomy, Advances_1.MapMaking],
         [Advances_1.NuclearFission, Advances_1.MassProduction, Advances_1.AtomicTheory],

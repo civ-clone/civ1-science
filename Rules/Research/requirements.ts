@@ -111,7 +111,7 @@ export const getRules: () => Requirements[] = (): Requirements[] => [
       [Mathematics, Alphabet, Masonry],
       [Medicine, Philosophy, Trade],
       [Metallurgy, Gunpowder, University],
-      [Monarchy, CodeOfLaws, Mysticism],
+      [Monarchy, CeremonialBurial, CodeOfLaws],
       [Mysticism, CeremonialBurial],
       [Navigation, Astronomy, MapMaking],
       [NuclearFission, MassProduction, AtomicTheory],
