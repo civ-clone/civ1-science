@@ -15,7 +15,7 @@ export const register = (game: Game): void =>
     ...captured(game.playerResearch, game.rng, game.clients),
     ...complete(game.engine),
     ...cost(),
-    ...processYield(game.playerResearch, game.rules),
+    ...processYield(game.playerResearch, game.rules, game.playerGovernments),
     ...requirements(),
     ...started(game.engine)
   );
