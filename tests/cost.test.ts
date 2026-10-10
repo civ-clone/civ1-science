@@ -26,6 +26,9 @@ import PlayerResearchRegistry from '@civ-clone/core-science/PlayerResearchRegist
 import RuleRegistry from '@civ-clone/core-rule/RuleRegistry';
 import Turn from '@civ-clone/core-turn-based-game/Turn';
 import TurnStart from '@civ-clone/core-player/Rules/TurnStart';
+import Effect from '@civ-clone/core-rule/Effect';
+import High from '@civ-clone/core-rule/Priorities/High';
+import Research from '@civ-clone/core-science/Yields/Research';
 import Year from '@civ-clone/core-game-year/Year';
 import cost from '../Rules/Research/cost';
 import { expect } from 'chai';
@@ -184,5 +187,33 @@ describe('player:turn-start', () => {
     ruleRegistry.process(TurnStart, player);
 
     expect(playerResearch.cost().value()).equal(100);
+  });
+
+  // As `civ1-player` adds the cities' research, at `High` (Copilot on #2).
+  it("should work out the cost before the turn's research is added", () => {
+    let year = -1;
+
+    const { player, playerResearch, ruleRegistry } = setUp({
+      year: () => year,
+      turn: 200,
+    });
+
+    ruleRegistry.register(
+      new TurnStart(
+        new High(),
+        new Effect((): void => playerResearch.add(new Research(60)))
+      )
+    );
+
+    playerResearch.research(TheWheel);
+
+    // 50 in BC, 100 in AD: 60 is enough for the one and not the other.
+    year = 1;
+
+    ruleRegistry.process(TurnStart, player);
+
+    expect(playerResearch.researching()).equal(TheWheel);
+    expect(playerResearch.cost().value()).equal(100);
+    expect(playerResearch.progress().value()).equal(60);
   });
 });
