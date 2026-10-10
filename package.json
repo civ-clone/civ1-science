@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@civ-clone/civ1-city": "github:civ-clone/civ1-city",
+    "@civ-clone/core-ai-client": "^0.1.0",
     "@types/chai": "^4.0.0",
     "@types/chai-spies": "^1.0.0",
     "@types/mocha": "^8.0.0",
