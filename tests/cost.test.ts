@@ -6,53 +6,150 @@ import {
   Pottery,
   TheWheel,
 } from '../Advances';
+import {
+  Chieftain,
+  Emperor,
+  King,
+  Prince,
+  Warlord,
+} from '@civ-clone/civ1-difficulty/Difficulties';
 import { describe, it } from 'mocha';
+import AIClient from '@civ-clone/core-ai-client/AIClient';
 import Advance from '@civ-clone/core-science/Advance';
 import AdvanceRegistry from '@civ-clone/core-science/AdvanceRegistry';
+import Client from '@civ-clone/core-client/Client';
+import ClientRegistry from '@civ-clone/core-client/ClientRegistry';
+import GameDifficultyRegistry from '@civ-clone/core-difficulty/GameDifficultyRegistry';
 import Player from '@civ-clone/core-player/Player';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
+import PlayerResearchRegistry from '@civ-clone/core-science/PlayerResearchRegistry';
 import RuleRegistry from '@civ-clone/core-rule/RuleRegistry';
+import Turn from '@civ-clone/core-turn-based-game/Turn';
+import TurnStart from '@civ-clone/core-player/Rules/TurnStart';
+import Year from '@civ-clone/core-game-year/Year';
 import cost from '../Rules/Research/cost';
 import { expect } from 'chai';
+import turnStart from '../Rules/Player/turn-start';
+
+type Setting = {
+  Level?: typeof Prince;
+  human?: boolean;
+  known?: number;
+  year?: number | (() => number);
+  turn?: number;
+};
+
+const setUp = ({
+  Level = Prince,
+  human = true,
+  known = 4,
+  year = -4000,
+  turn = 0,
+}: Setting = {}) => {
+  const ruleRegistry = new RuleRegistry(),
+    advanceRegistry = new AdvanceRegistry(),
+    clientRegistry = new ClientRegistry(),
+    gameDifficultyRegistry = new GameDifficultyRegistry(),
+    playerResearchRegistry = new PlayerResearchRegistry(),
+    player = new Player(ruleRegistry),
+    playerResearch = new PlayerResearch(player, advanceRegistry, ruleRegistry),
+    gameYear = {
+      value: typeof year === 'function' ? year : () => year,
+    } as unknown as Year,
+    gameTurn = { value: () => turn } as unknown as Turn;
+
+  gameDifficultyRegistry.set(Level);
+  clientRegistry.register(human ? new Client(player) : new AIClient(player));
+  playerResearchRegistry.register(playerResearch);
+  ruleRegistry.register(
+    ...cost(
+      gameDifficultyRegistry,
+      clientRegistry,
+      playerResearchRegistry,
+      gameTurn,
+      gameYear
+    ),
+    ...turnStart(playerResearchRegistry, ruleRegistry)
+  );
+  advanceRegistry.register(
+    Alphabet,
+    BronzeWorking,
+    CeremonialBurial,
+    Masonry,
+    Pottery,
+    TheWheel
+  );
+
+  // `known` advances already discovered, so the next is advance `known + 1`.
+  (
+    [Alphabet, BronzeWorking, CeremonialBurial, Masonry, Pottery].slice(
+      0,
+      known
+    ) as (typeof Advance)[]
+  ).forEach((Known) => playerResearch.complete().push(new Known()));
+
+  return { player, playerResearch, ruleRegistry };
+};
+
+const costOf = (setting: Setting): number => {
+  const { playerResearch } = setUp(setting);
+
+  playerResearch.research(TheWheel);
+
+  return playerResearch.cost().value();
+};
 
 describe('cost', () => {
-  it('should cost increasingly more for each `Advance`', () => {
-    const ruleRegistry = new RuleRegistry(),
-      advanceRegistry = new AdvanceRegistry(),
-      playerResearch = new PlayerResearch(
-        new Player(ruleRegistry),
-        advanceRegistry,
-        ruleRegistry
-      );
+  const levels = [Chieftain, Warlord, Prince, King, Emperor];
 
-    ruleRegistry.register(...cost());
+  it('should cost the human 30 to 70 for a fifth advance in BC, Chieftain to Emperor', () => {
+    expect(levels.map((Level) => costOf({ Level }))).eql([30, 40, 50, 60, 70]);
+  });
 
-    advanceRegistry.register(
-      Alphabet,
-      BronzeWorking,
-      CeremonialBurial,
-      Masonry,
-      Pottery,
-      TheWheel
-    );
+  it('should cost twice as much in AD', () => {
+    expect(levels.map((Level) => costOf({ Level, year: 1, turn: 200 }))).eql([
+      60, 80, 100, 120, 140,
+    ]);
+  });
 
-    (
-      [
-        [Alphabet, 6],
-        [BronzeWorking, 12],
-        [CeremonialBurial, 18],
-        [Masonry, 24],
-        [Pottery, 30],
-        [TheWheel, 36],
-      ] as [typeof Advance, number][]
-    ).forEach(([AdvanceType, expectedCost]) => {
-      if (playerResearch.researching() !== null) {
-        playerResearch.add(playerResearch.cost());
-      }
+  it('should cost the human at least 11 a step for the first few advances', () => {
+    expect(
+      [0, 1, 2, 3].map((known) => costOf({ Level: Chieftain, known }))
+    ).eql([10, 18, 24, 28]);
+  });
 
-      playerResearch.research(AdvanceType);
+  it('should cost a computer player 14 - level a step', () => {
+    expect(levels.map((Level) => costOf({ Level, human: false }))).eql([
+      70, 65, 60, 55, 50,
+    ]);
+  });
 
-      expect(playerResearch.cost().value()).equal(expectedCost);
+  it('should cost more in AD while the leader is ahead of schedule', () => {
+    // 5 advances by turn 9: 5 - 1 = 4 more a step, doubled in AD.
+    expect(costOf({ Level: Prince, year: 1, turn: 9 })).equal((10 + 4) * 5 * 2);
+    // Never more than 6.
+    expect(costOf({ Level: Prince, year: 1, turn: 0 })).equal((10 + 5) * 5 * 2);
+    expect(costOf({ Level: Prince, year: -1, turn: 0 })).equal(10 * 5);
+  });
+});
+
+describe('player:turn-start', () => {
+  it('should work out the cost of the advance being researched again', () => {
+    let year = -1;
+
+    const { player, playerResearch, ruleRegistry } = setUp({
+      year: () => year,
+      turn: 200,
     });
+
+    playerResearch.research(TheWheel);
+
+    expect(playerResearch.cost().value()).equal(50);
+
+    year = 1;
+
+    ruleRegistry.process(TurnStart, player);
+
+    expect(playerResearch.cost().value()).equal(100);
   });
 });

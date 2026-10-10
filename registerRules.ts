@@ -6,6 +6,7 @@ import cost from './Rules/Research/cost';
 import processYield from './Rules/City/process-yield';
 import requirements from './Rules/Research/requirements';
 import started from './Rules/Research/started';
+import turnStart from './Rules/Player/turn-start';
 import { Game, defaultGame } from '@civ-clone/core-game';
 
 export const register = (game: Game): void =>
@@ -14,10 +15,17 @@ export const register = (game: Game): void =>
     ...added(game.advances, game.playerResearch, game.rules, game.rng),
     ...captured(game.playerResearch, game.rng, game.clients),
     ...complete(game.engine),
-    ...cost(),
+    ...cost(
+      game.difficulty,
+      game.clients,
+      game.playerResearch,
+      game.turn,
+      game.year
+    ),
     ...processYield(game.playerResearch, game.rules, game.playerGovernments),
     ...requirements(),
-    ...started(game.engine)
+    ...started(game.engine),
+    ...turnStart(game.playerResearch, game.rules)
   );
 
 // The plugin loader imports each package for this side effect. Until it passes
