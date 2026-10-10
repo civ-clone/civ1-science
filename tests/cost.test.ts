@@ -35,6 +35,8 @@ type Setting = {
   Level?: typeof Prince;
   human?: boolean;
   known?: number;
+  // Another player, and the advances it has already discovered.
+  leader?: number;
   year?: number | (() => number);
   turn?: number;
 };
@@ -43,6 +45,7 @@ const setUp = ({
   Level = Prince,
   human = true,
   known = 4,
+  leader,
   year = -4000,
   turn = 0,
 }: Setting = {}) => {
@@ -88,6 +91,21 @@ const setUp = ({
     ) as (typeof Advance)[]
   ).forEach((Known) => playerResearch.complete().push(new Known()));
 
+  if (leader !== undefined) {
+    const leaderResearch = new PlayerResearch(
+      new Player(ruleRegistry),
+      advanceRegistry,
+      ruleRegistry
+    );
+
+    // Only how many is counted.
+    for (let i = 0; i < leader; i++) {
+      leaderResearch.complete().push(new Alphabet());
+    }
+
+    playerResearchRegistry.register(leaderResearch);
+  }
+
   return { player, playerResearch, ruleRegistry };
 };
 
@@ -127,9 +145,24 @@ describe('cost', () => {
   it('should cost more in AD while the leader is ahead of schedule', () => {
     // 5 advances by turn 9: 5 - 1 = 4 more a step, doubled in AD.
     expect(costOf({ Level: Prince, year: 1, turn: 9 })).equal((10 + 4) * 5 * 2);
-    // Never more than 6.
     expect(costOf({ Level: Prince, year: 1, turn: 0 })).equal((10 + 5) * 5 * 2);
+    // Not in BC.
     expect(costOf({ Level: Prince, year: -1, turn: 0 })).equal(10 * 5);
+  });
+
+  it("should measure the schedule by the leader's advances, not the player's own", () => {
+    // The leader has 8 by turn 27: 8 - 3 = 5 more a step. By the player's own 5 it would be 5 - 3 = 2.
+    expect(costOf({ Level: Prince, year: 1, turn: 27, leader: 7 })).equal(
+      (10 + 5) * 5 * 2
+    );
+    // A player behind them doesn't count.
+    expect(costOf({ Level: Prince, year: 1, turn: 27, leader: 2 })).equal(
+      (10 + 2) * 5 * 2
+    );
+    // Never more than 6: the leader has 13 by turn 0.
+    expect(costOf({ Level: Prince, year: 1, turn: 0, leader: 12 })).equal(
+      (10 + 6) * 5 * 2
+    );
   });
 });
 
