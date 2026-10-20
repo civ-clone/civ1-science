@@ -10,6 +10,7 @@ import {
   Currency,
   Engineering,
   Feudalism,
+  FutureTechnology,
   Gunpowder,
   HorsebackRiding,
   Invention,
@@ -132,5 +133,30 @@ describe('requirements', () => {
 
       expect(playerResearch.available().includes(TestAdvance)).to.true;
     });
+  });
+
+  it('should only offer Future Technology once every other advance is known, and then again after it', (): void => {
+    const ruleRegistry = new RuleRegistry(),
+      advanceRegistry = new AdvanceRegistry(),
+      playerResearch = new PlayerResearch(
+        new Player(ruleRegistry),
+        advanceRegistry,
+        ruleRegistry
+      );
+
+    ruleRegistry.register(...requirements(advanceRegistry));
+    advanceRegistry.register(Alphabet, Writing, FutureTechnology);
+
+    playerResearch.addAdvance(Alphabet);
+
+    expect(playerResearch.available()).eql([Writing]);
+
+    playerResearch.addAdvance(Writing);
+
+    expect(playerResearch.available()).eql([FutureTechnology]);
+
+    playerResearch.addAdvance(FutureTechnology);
+
+    expect(playerResearch.available()).eql([FutureTechnology]);
   });
 });

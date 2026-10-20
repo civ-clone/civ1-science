@@ -66,6 +66,7 @@ import {
   Trade,
   University,
   Writing,
+  FutureTechnology,
 } from './Advances';
 import { instance as advanceRegistryInstance } from '@civ-clone/core-science/AdvanceRegistry';
 
@@ -136,5 +137,6 @@ advanceRegistryInstance.register(
   TheoryOfGravity,
   Trade,
   University,
-  Writing
+  Writing,
+  FutureTechnology
 );

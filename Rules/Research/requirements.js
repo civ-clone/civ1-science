@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRules = void 0;
 const Advances_1 = require("../../Advances");
+const AdvanceRegistry_1 = require("@civ-clone/core-science/AdvanceRegistry");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const Requirements_1 = require("@civ-clone/core-science/Rules/Requirements");
-const getRules = () => [
+const getRules = (advanceRegistry = AdvanceRegistry_1.instance) => [
     ...[
         [Advances_1.AdvancedFlight, Advances_1.Flight, Advances_1.Electricity],
         [Advances_1.Astronomy, Advances_1.Mathematics, Advances_1.Mysticism],
@@ -68,6 +69,9 @@ const getRules = () => [
         [Advances_1.University, Advances_1.Philosophy, Advances_1.Mathematics],
         [Advances_1.Writing, Advances_1.Alphabet],
     ].map(([AdvanceWithRequirements, ...requiredAdvances]) => new Requirements_1.default(`civ1-science:research/requirements/${AdvanceWithRequirements.name}`, new Criterion_1.default((CheckAdvance) => CheckAdvance === AdvanceWithRequirements), new Effect_1.default((CheckAdvance, discoveredAdvances) => requiredAdvances.every((RequiredAdvance) => discoveredAdvances.some((advance) => advance instanceof RequiredAdvance))))),
+    new Requirements_1.default('civ1-science:research/requirements/FutureTechnology', new Criterion_1.default((CheckAdvance) => CheckAdvance === Advances_1.FutureTechnology), new Effect_1.default((CheckAdvance, discoveredAdvances) => advanceRegistry
+        .filter((AdvanceType) => !AdvanceType.repeatable)
+        .every((AdvanceType) => discoveredAdvances.some((advance) => advance instanceof AdvanceType)))),
 ];
 exports.getRules = getRules;
 exports.default = exports.getRules;

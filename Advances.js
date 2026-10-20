@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Plastics = exports.Physics = exports.Philosophy = exports.NuclearPower = exports.NuclearFission = exports.Navigation = exports.Mysticism = exports.Monarchy = exports.Metallurgy = exports.Medicine = exports.Mathematics = exports.MassProduction = exports.Masonry = exports.MapMaking = exports.Magnetism = exports.Literacy = exports.LaborUnion = exports.IronWorking = exports.Invention = exports.Industrialization = exports.HorsebackRiding = exports.Gunpowder = exports.GeneticEngineering = exports.FusionPower = exports.Flight = exports.Feudalism = exports.Explosives = exports.Engineering = exports.Electronics = exports.Electricity = exports.Democracy = exports.Currency = exports.Corporation = exports.Construction = exports.Conscription = exports.Computers = exports.Communism = exports.Combustion = exports.CodeOfLaws = exports.Chivalry = exports.Chemistry = exports.CeremonialBurial = exports.BronzeWorking = exports.BridgeBuilding = exports.Banking = exports.Automobile = exports.AtomicTheory = exports.Astronomy = exports.Alphabet = exports.AdvancedFlight = void 0;
-exports.Writing = exports.University = exports.Trade = exports.TheoryOfGravity = exports.TheWheel = exports.TheRepublic = exports.Superconductor = exports.Steel = exports.SteamEngine = exports.SpaceFlight = exports.Rocketry = exports.Robotics = exports.Religion = exports.Refining = exports.Recycling = exports.Railroad = exports.Pottery = void 0;
+exports.FutureTechnology = exports.Writing = exports.University = exports.Trade = exports.TheoryOfGravity = exports.TheWheel = exports.TheRepublic = exports.Superconductor = exports.Steel = exports.SteamEngine = exports.SpaceFlight = exports.Rocketry = exports.Robotics = exports.Religion = exports.Refining = exports.Recycling = exports.Railroad = exports.Pottery = void 0;
+const Advance_1 = require("@civ-clone/core-science/Advance");
 var Advances_1 = require("@civ-clone/library-science/Advances");
 Object.defineProperty(exports, "AdvancedFlight", { enumerable: true, get: function () { return Advances_1.AdvancedFlight; } });
 Object.defineProperty(exports, "Alphabet", { enumerable: true, get: function () { return Advances_1.Alphabet; } });
@@ -70,4 +71,11 @@ Object.defineProperty(exports, "TheoryOfGravity", { enumerable: true, get: funct
 Object.defineProperty(exports, "Trade", { enumerable: true, get: function () { return Advances_1.Trade; } });
 Object.defineProperty(exports, "University", { enumerable: true, get: function () { return Advances_1.University; } });
 Object.defineProperty(exports, "Writing", { enumerable: true, get: function () { return Advances_1.Writing; } });
+// Once every other advance is known, research carries on into Future Technology 1, 2, …, each costing more than the
+//  last and worth Civilization Score points: p328, Wilson, J.L & Emrich A. (1992). Sid Meier's Civilization, or Rome on
+//  640K a Day. Rocklin, CA: Prima Publishing
+class FutureTechnology extends Advance_1.default {
+}
+exports.FutureTechnology = FutureTechnology;
+FutureTechnology.repeatable = true;
 //# sourceMappingURL=Advances.js.map

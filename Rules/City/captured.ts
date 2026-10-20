@@ -35,6 +35,7 @@ export const getRules = (
           .complete()
           .some(
             (advance) =>
+              !(advance.constructor as typeof Advance).repeatable &&
               !playerResearchRegistry
                 .getByPlayer(capturingPlayer)
                 .completed(advance.constructor as typeof Advance)
@@ -53,7 +54,9 @@ export const getRules = (
             .complete()
             .map((advance) => advance.sourceClass() as typeof Advance)
             .filter(
-              (AdvanceType) => !capturingPlayerResearch.completed(AdvanceType)
+              (AdvanceType) =>
+                !AdvanceType.repeatable &&
+                !capturingPlayerResearch.completed(AdvanceType)
             ),
           client = clientRegistry.getByPlayer(capturingPlayer),
           ChosenAdvance = await client.chooseFromList(

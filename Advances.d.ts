@@ -1,3 +1,4 @@
+import Advance from '@civ-clone/core-science/Advance';
 export {
   AdvancedFlight,
   Alphabet,
@@ -67,3 +68,6 @@ export {
   University,
   Writing,
 } from '@civ-clone/library-science/Advances';
+export declare class FutureTechnology extends Advance {
+  static readonly repeatable = true;
+}
