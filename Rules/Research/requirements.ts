@@ -26,6 +26,7 @@ import {
   Feudalism,
   Flight,
   FusionPower,
+  FutureTechnology,
   GeneticEngineering,
   Gunpowder,
   HorsebackRiding,
@@ -66,12 +67,18 @@ import {
   University,
   Writing,
 } from '../../Advances';
+import {
+  AdvanceRegistry,
+  instance as advanceRegistryInstance,
+} from '@civ-clone/core-science/AdvanceRegistry';
 import Advance from '@civ-clone/core-science/Advance';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import Requirements from '@civ-clone/core-science/Rules/Requirements';
 
-export const getRules: () => Requirements[] = (): Requirements[] => [
+export const getRules: (advanceRegistry?: AdvanceRegistry) => Requirements[] = (
+  advanceRegistry: AdvanceRegistry = advanceRegistryInstance
+): Requirements[] => [
   ...(
     [
       [AdvancedFlight, Flight, Electricity],
@@ -156,6 +163,25 @@ export const getRules: () => Requirements[] = (): Requirements[] => [
             )
         )
       )
+  ),
+  new Requirements(
+    'civ1-science:research/requirements/FutureTechnology',
+    new Criterion(
+      (CheckAdvance: typeof Advance): boolean =>
+        CheckAdvance === FutureTechnology
+    ),
+    new Effect(
+      (CheckAdvance: typeof Advance, discoveredAdvances: Advance[]): boolean =>
+        advanceRegistry
+          .filter(
+            (AdvanceType: typeof Advance): boolean => !AdvanceType.repeatable
+          )
+          .every((AdvanceType): boolean =>
+            discoveredAdvances.some(
+              (advance: Advance): boolean => advance instanceof AdvanceType
+            )
+          )
+    )
   ),
 ];
 

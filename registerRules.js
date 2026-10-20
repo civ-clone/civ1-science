@@ -11,7 +11,7 @@ const requirements_1 = require("./Rules/Research/requirements");
 const started_1 = require("./Rules/Research/started");
 const turn_start_1 = require("./Rules/Player/turn-start");
 const core_game_1 = require("@civ-clone/core-game");
-const register = (game) => game.rules.register(...(0, action_1.default)(game.playerResearch), ...(0, added_1.default)(game.advances, game.playerResearch, game.rules, game.rng), ...(0, captured_1.default)(game.playerResearch, game.rng, game.clients), ...(0, complete_1.default)(game.engine), ...(0, cost_1.default)(game.difficulty, game.clients, game.playerResearch, game.turn, game.year), ...(0, process_yield_1.default)(game.playerResearch, game.rules, game.playerGovernments), ...(0, requirements_1.default)(), ...(0, started_1.default)(game.engine), ...(0, turn_start_1.default)(game.playerResearch, game.rules));
+const register = (game) => game.rules.register(...(0, action_1.default)(game.playerResearch), ...(0, added_1.default)(game.advances, game.playerResearch, game.rules, game.rng), ...(0, captured_1.default)(game.playerResearch, game.rng, game.clients), ...(0, complete_1.default)(game.engine), ...(0, cost_1.default)(game.difficulty, game.clients, game.playerResearch, game.turn, game.year), ...(0, process_yield_1.default)(game.playerResearch, game.rules, game.playerGovernments), ...(0, requirements_1.default)(game.advances), ...(0, started_1.default)(game.engine), ...(0, turn_start_1.default)(game.playerResearch, game.rules));
 exports.register = register;
 // The plugin loader imports each package for this side effect. Until it passes
 // a `Game` of its own, dropping it would produce a game with silently absent

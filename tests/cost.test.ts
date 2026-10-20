@@ -2,6 +2,7 @@ import {
   Alphabet,
   BronzeWorking,
   CeremonialBurial,
+  FutureTechnology,
   Masonry,
   Pottery,
   TheWheel,
@@ -215,5 +216,23 @@ describe('player:turn-start', () => {
     expect(playerResearch.researching()).equal(TheWheel);
     expect(playerResearch.cost().value()).equal(100);
     expect(playerResearch.progress().value()).equal(60);
+  });
+
+  it('should count each Future Technology as an advance known, and cost more for the next', () => {
+    const { playerResearch } = setUp({ known: 4 });
+
+    playerResearch.research(FutureTechnology);
+
+    const first = playerResearch.cost().value();
+
+    playerResearch.add(new Research(first));
+
+    expect(playerResearch.completed(FutureTechnology)).true;
+    expect(playerResearch.researching()).null;
+
+    playerResearch.research(FutureTechnology);
+
+    expect(first).equal(costOf({ known: 4 }));
+    expect(playerResearch.cost().value()).equal(costOf({ known: 5 }));
   });
 });

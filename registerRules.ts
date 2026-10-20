@@ -23,7 +23,7 @@ export const register = (game: Game): void =>
       game.year
     ),
     ...processYield(game.playerResearch, game.rules, game.playerGovernments),
-    ...requirements(),
+    ...requirements(game.advances),
     ...started(game.engine),
     ...turnStart(game.playerResearch, game.rules)
   );
