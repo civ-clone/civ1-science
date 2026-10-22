@@ -7,9 +7,12 @@ const Captured_1 = require("@civ-clone/core-city/Rules/Captured");
 const ChoiceMeta_1 = require("@civ-clone/core-client/ChoiceMeta");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
+const isBarbarian_1 = require("@civ-clone/base-civilization-barbarian/isBarbarian");
 const core_random_1 = require("@civ-clone/core-random");
 const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance, randomNumberGenerator = core_random_1.instance, clientRegistry = ClientRegistry_1.instance) => [
-    new Captured_1.default('civ1-science:city/captured/steal-advance', new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
+    new Captured_1.default('civ1-science:city/captured/steal-advance', 
+    // Barbarians take no advance from a city, and none can be taken from them (civ-clone/web-renderer#169).
+    new Criterion_1.default((capturedCity, capturingPlayer, player) => !(0, isBarbarian_1.default)(capturingPlayer) && !(0, isBarbarian_1.default)(player)), new Criterion_1.default((capturedCity, capturingPlayer, player) => playerResearchRegistry
         .getByPlayer(player)
         .complete()
         .some((advance) => !advance.constructor.repeatable &&

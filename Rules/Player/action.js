@@ -6,8 +6,11 @@ const Action_1 = require("@civ-clone/core-player/Rules/Action");
 const PlayerActions_1 = require("../../PlayerActions");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
+const isBarbarian_1 = require("@civ-clone/base-civilization-barbarian/isBarbarian");
 const getRules = (playerResearchRegistry = PlayerResearchRegistry_1.instance) => [
-    new Action_1.default('civ1-science:player/action/choose-research', new Criterion_1.default((player) => playerResearchRegistry.getByPlayer(player).researching() === null), new Criterion_1.default((player) => playerResearchRegistry.getByPlayer(player).available().length > 0), new Effect_1.default((player) => [
+    new Action_1.default('civ1-science:player/action/choose-research', 
+    // Barbarians never research (civ-clone/web-renderer#169).
+    new Criterion_1.default((player) => !(0, isBarbarian_1.default)(player)), new Criterion_1.default((player) => playerResearchRegistry.getByPlayer(player).researching() === null), new Criterion_1.default((player) => playerResearchRegistry.getByPlayer(player).available().length > 0), new Effect_1.default((player) => [
         new PlayerActions_1.ChooseResearch(player, playerResearchRegistry.getByPlayer(player)),
     ])),
 ];
