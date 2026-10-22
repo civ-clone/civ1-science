@@ -13,6 +13,7 @@ import City from '@civ-clone/core-city/City';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import Player from '@civ-clone/core-player/Player';
+import isBarbarian from '@civ-clone/base-civilization-barbarian/isBarbarian';
 import { instance as rngInstance } from '@civ-clone/core-random';
 
 declare global {
@@ -28,6 +29,11 @@ export const getRules = (
 ): Captured[] => [
   new Captured(
     'civ1-science:city/captured/steal-advance',
+    // Barbarians take no advance from a city, and none can be taken from them (civ-clone/web-renderer#169).
+    new Criterion(
+      (capturedCity: City, capturingPlayer: Player, player: Player): boolean =>
+        !isBarbarian(capturingPlayer) && !isBarbarian(player)
+    ),
     new Criterion(
       (capturedCity: City, capturingPlayer: Player, player: Player): boolean =>
         playerResearchRegistry

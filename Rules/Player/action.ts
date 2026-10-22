@@ -8,6 +8,7 @@ import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import Player from '@civ-clone/core-player/Player';
 import PlayerAction from '@civ-clone/core-player/PlayerAction';
+import isBarbarian from '@civ-clone/base-civilization-barbarian/isBarbarian';
 
 export const getRules: (
   playerResearchRegistry?: PlayerResearchRegistry
@@ -16,6 +17,8 @@ export const getRules: (
 ): Action[] => [
   new Action(
     'civ1-science:player/action/choose-research',
+    // Barbarians never research (civ-clone/web-renderer#169).
+    new Criterion((player: Player): boolean => !isBarbarian(player)),
     new Criterion(
       (player: Player): boolean =>
         playerResearchRegistry.getByPlayer(player).researching() === null
