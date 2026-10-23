@@ -1,77 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRules = void 0;
-const Advances_1 = require("../../Advances");
+exports.getRules = exports.futureTechnology = exports.deriveRequirementsRules = exports.requirementsRulesFor = void 0;
 const AdvanceRegistry_1 = require("@civ-clone/core-science/AdvanceRegistry");
+const Requirement_1 = require("@civ-clone/core-requirement/Requirement");
 const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
+const Advances_1 = require("../../Advances");
 const Requirements_1 = require("@civ-clone/core-science/Rules/Requirements");
+const Requirements_2 = require("../../Requirements");
+/** The rule `entry` is played by: its subject can be researched once the player has discovered the advances it needs. */
+const requirementsRulesFor = (entry) => entry.relation === 'requires'
+    ? [
+        new Requirements_1.default(entry.id, new Criterion_1.default((CheckAdvance) => CheckAdvance === entry.subject), new Effect_1.default((CheckAdvance, discoveredAdvances) => (0, Requirement_1.met)(entry, (target) => discoveredAdvances.some((advance) => advance instanceof target)))),
+    ]
+    : [];
+exports.requirementsRulesFor = requirementsRulesFor;
+/** What `registerRules` gives the game's `requirements` to make each entry's rule with. */
+const deriveRequirementsRules = (entry) => (0, exports.requirementsRulesFor)(entry);
+exports.deriveRequirementsRules = deriveRequirementsRules;
+/** Future Technology needs every advance that can't be repeated: not an edge of the graph, so a rule of its own. */
+const futureTechnology = (advanceRegistry = AdvanceRegistry_1.instance) => new Requirements_1.default('civ1-science:research/requirements/FutureTechnology', new Criterion_1.default((CheckAdvance) => CheckAdvance === Advances_1.FutureTechnology), new Effect_1.default((CheckAdvance, discoveredAdvances) => advanceRegistry
+    .filter((AdvanceType) => !AdvanceType.repeatable)
+    .every((AdvanceType) => discoveredAdvances.some((advance) => advance instanceof AdvanceType))));
+exports.futureTechnology = futureTechnology;
+/**
+ * Every rule about which advances a player can research, as `registerRules` registers them: one for each of
+ * `Requirements`' entries, then Future Technology's. For a rule registry without a game's `requirements` (tests, and
+ * rulesets that build on these): a game's are registered through `game.requirements`, so a plugin can change an entry
+ * and its rule together.
+ */
 const getRules = (advanceRegistry = AdvanceRegistry_1.instance) => [
-    ...[
-        [Advances_1.AdvancedFlight, Advances_1.Flight, Advances_1.Electricity],
-        [Advances_1.Astronomy, Advances_1.Mathematics, Advances_1.Mysticism],
-        [Advances_1.AtomicTheory, Advances_1.TheoryOfGravity, Advances_1.Physics],
-        [Advances_1.Automobile, Advances_1.Combustion, Advances_1.Steel],
-        [Advances_1.Banking, Advances_1.TheRepublic, Advances_1.Trade],
-        [Advances_1.BridgeBuilding, Advances_1.Construction, Advances_1.IronWorking],
-        [Advances_1.Chemistry, Advances_1.University, Advances_1.Medicine],
-        [Advances_1.Chivalry, Advances_1.Feudalism, Advances_1.HorsebackRiding],
-        [Advances_1.CodeOfLaws, Advances_1.Alphabet],
-        [Advances_1.Combustion, Advances_1.Refining, Advances_1.Explosives],
-        [Advances_1.Communism, Advances_1.Philosophy, Advances_1.Industrialization],
-        [Advances_1.Computers, Advances_1.Electronics, Advances_1.Mathematics],
-        [Advances_1.Conscription, Advances_1.Explosives, Advances_1.TheRepublic],
-        [Advances_1.Construction, Advances_1.Currency, Advances_1.Masonry],
-        [Advances_1.Corporation, Advances_1.Banking, Advances_1.Industrialization],
-        [Advances_1.Currency, Advances_1.BronzeWorking],
-        [Advances_1.Democracy, Advances_1.Philosophy, Advances_1.Literacy],
-        [Advances_1.Electricity, Advances_1.Metallurgy, Advances_1.Magnetism],
-        [Advances_1.Electronics, Advances_1.Engineering, Advances_1.Electricity],
-        [Advances_1.Engineering, Advances_1.Construction, Advances_1.TheWheel],
-        [Advances_1.Explosives, Advances_1.Gunpowder, Advances_1.Chemistry],
-        [Advances_1.Feudalism, Advances_1.Masonry, Advances_1.Monarchy],
-        [Advances_1.Flight, Advances_1.Combustion, Advances_1.Physics],
-        [Advances_1.FusionPower, Advances_1.NuclearPower, Advances_1.Superconductor],
-        [Advances_1.GeneticEngineering, Advances_1.Corporation, Advances_1.Medicine],
-        [Advances_1.Gunpowder, Advances_1.Invention, Advances_1.IronWorking],
-        [Advances_1.Industrialization, Advances_1.Railroad, Advances_1.Banking],
-        [Advances_1.Invention, Advances_1.Engineering, Advances_1.Literacy],
-        [Advances_1.IronWorking, Advances_1.BronzeWorking],
-        [Advances_1.LaborUnion, Advances_1.MassProduction, Advances_1.Communism],
-        [Advances_1.Literacy, Advances_1.CodeOfLaws, Advances_1.Writing],
-        [Advances_1.Magnetism, Advances_1.Navigation, Advances_1.Physics],
-        [Advances_1.MapMaking, Advances_1.Alphabet],
-        [Advances_1.MassProduction, Advances_1.Corporation, Advances_1.Automobile],
-        [Advances_1.Mathematics, Advances_1.Alphabet, Advances_1.Masonry],
-        [Advances_1.Medicine, Advances_1.Philosophy, Advances_1.Trade],
-        [Advances_1.Metallurgy, Advances_1.Gunpowder, Advances_1.University],
-        [Advances_1.Monarchy, Advances_1.CeremonialBurial, Advances_1.CodeOfLaws],
-        [Advances_1.Mysticism, Advances_1.CeremonialBurial],
-        [Advances_1.Navigation, Advances_1.Astronomy, Advances_1.MapMaking],
-        [Advances_1.NuclearFission, Advances_1.MassProduction, Advances_1.AtomicTheory],
-        [Advances_1.NuclearPower, Advances_1.NuclearFission, Advances_1.Electronics],
-        [Advances_1.Philosophy, Advances_1.Mysticism, Advances_1.Literacy],
-        [Advances_1.Physics, Advances_1.Navigation, Advances_1.Mathematics],
-        [Advances_1.Plastics, Advances_1.Refining, Advances_1.SpaceFlight],
-        [Advances_1.Railroad, Advances_1.BridgeBuilding, Advances_1.SteamEngine],
-        [Advances_1.Recycling, Advances_1.Democracy, Advances_1.MassProduction],
-        [Advances_1.Refining, Advances_1.Corporation, Advances_1.Chemistry],
-        [Advances_1.Religion, Advances_1.Philosophy, Advances_1.Writing],
-        [Advances_1.Robotics, Advances_1.Computers, Advances_1.Plastics],
-        [Advances_1.Rocketry, Advances_1.Electronics, Advances_1.AdvancedFlight],
-        [Advances_1.SpaceFlight, Advances_1.Computers, Advances_1.Rocketry],
-        [Advances_1.SteamEngine, Advances_1.Invention, Advances_1.Physics],
-        [Advances_1.Steel, Advances_1.Metallurgy, Advances_1.Industrialization],
-        [Advances_1.Superconductor, Advances_1.MassProduction, Advances_1.Plastics],
-        [Advances_1.TheRepublic, Advances_1.CodeOfLaws, Advances_1.Literacy],
-        [Advances_1.TheoryOfGravity, Advances_1.Astronomy, Advances_1.University],
-        [Advances_1.Trade, Advances_1.CodeOfLaws, Advances_1.Currency],
-        [Advances_1.University, Advances_1.Philosophy, Advances_1.Mathematics],
-        [Advances_1.Writing, Advances_1.Alphabet],
-    ].map(([AdvanceWithRequirements, ...requiredAdvances]) => new Requirements_1.default(`civ1-science:research/requirements/${AdvanceWithRequirements.name}`, new Criterion_1.default((CheckAdvance) => CheckAdvance === AdvanceWithRequirements), new Effect_1.default((CheckAdvance, discoveredAdvances) => requiredAdvances.every((RequiredAdvance) => discoveredAdvances.some((advance) => advance instanceof RequiredAdvance))))),
-    new Requirements_1.default('civ1-science:research/requirements/FutureTechnology', new Criterion_1.default((CheckAdvance) => CheckAdvance === Advances_1.FutureTechnology), new Effect_1.default((CheckAdvance, discoveredAdvances) => advanceRegistry
-        .filter((AdvanceType) => !AdvanceType.repeatable)
-        .every((AdvanceType) => discoveredAdvances.some((advance) => advance instanceof AdvanceType)))),
+    ...Requirements_2.default.flatMap(exports.requirementsRulesFor),
+    (0, exports.futureTechnology)(advanceRegistry),
 ];
 exports.getRules = getRules;
 exports.default = exports.getRules;
