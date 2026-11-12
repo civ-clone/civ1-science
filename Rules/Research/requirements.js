@@ -7,6 +7,7 @@ const Criterion_1 = require("@civ-clone/core-rule/Criterion");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const Advances_1 = require("../../Advances");
 const Requirements_1 = require("@civ-clone/core-science/Rules/Requirements");
+const knowsEveryNonRepeatableAdvance_1 = require("@civ-clone/base-science-advance-future-technology/lib/knowsEveryNonRepeatableAdvance");
 const Requirements_2 = require("../../Requirements");
 /** The rule `entry` is played by: its subject can be researched once the player has discovered the advances it needs. */
 const requirementsRulesFor = (entry) => entry.relation === 'requires'
@@ -19,9 +20,7 @@ exports.requirementsRulesFor = requirementsRulesFor;
 const deriveRequirementsRules = (entry) => (0, exports.requirementsRulesFor)(entry);
 exports.deriveRequirementsRules = deriveRequirementsRules;
 /** Future Technology needs every advance that can't be repeated: not an edge of the graph, so a rule of its own. */
-const futureTechnology = (advanceRegistry = AdvanceRegistry_1.instance) => new Requirements_1.default('civ1-science:research/requirements/FutureTechnology', new Criterion_1.default((CheckAdvance) => CheckAdvance === Advances_1.FutureTechnology), new Effect_1.default((CheckAdvance, discoveredAdvances) => advanceRegistry
-    .filter((AdvanceType) => !AdvanceType.repeatable)
-    .every((AdvanceType) => discoveredAdvances.some((advance) => advance instanceof AdvanceType))));
+const futureTechnology = (advanceRegistry = AdvanceRegistry_1.instance) => new Requirements_1.default('civ1-science:research/requirements/FutureTechnology', new Criterion_1.default((CheckAdvance) => CheckAdvance === Advances_1.FutureTechnology), new Effect_1.default((CheckAdvance, discoveredAdvances) => (0, knowsEveryNonRepeatableAdvance_1.default)(advanceRegistry, discoveredAdvances)));
 exports.futureTechnology = futureTechnology;
 /**
  * Every rule about which advances a player can research, as `registerRules` registers them: one for each of

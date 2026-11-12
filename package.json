@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@civ-clone/base-civilization-barbarian": "^0.1.0",
+    "@civ-clone/base-science-advance-future-technology": "github:civ-clone/base-science-advance-future-technology#feat/future-technology",
     "@civ-clone/civ1-difficulty": "github:civ-clone/civ1-difficulty",
     "@civ-clone/civ1-government": "github:civ-clone/civ1-government",
     "@civ-clone/core-city": "^0.1.0",
