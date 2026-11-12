@@ -13,6 +13,7 @@ import { Deriver } from '@civ-clone/core-requirement/RequirementRegistry';
 import Effect from '@civ-clone/core-rule/Effect';
 import { FutureTechnology } from '../../Advances';
 import Requirements from '@civ-clone/core-science/Rules/Requirements';
+import knowsEveryNonRepeatableAdvance from '@civ-clone/base-science-advance-future-technology/lib/knowsEveryNonRepeatableAdvance';
 import requiresAdvances from '../../Requirements';
 
 /** The rule `entry` is played by: its subject can be researched once the player has discovered the advances it needs. */
@@ -58,15 +59,7 @@ export const futureTechnology = (
     ),
     new Effect(
       (CheckAdvance: typeof Advance, discoveredAdvances: Advance[]): boolean =>
-        advanceRegistry
-          .filter(
-            (AdvanceType: typeof Advance): boolean => !AdvanceType.repeatable
-          )
-          .every((AdvanceType): boolean =>
-            discoveredAdvances.some(
-              (advance: Advance): boolean => advance instanceof AdvanceType
-            )
-          )
+        knowsEveryNonRepeatableAdvance(advanceRegistry, discoveredAdvances)
     )
   );
 

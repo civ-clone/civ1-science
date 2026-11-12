@@ -1,5 +1,3 @@
-import Advance from '@civ-clone/core-science/Advance';
-
 export {
   AdvancedFlight,
   Alphabet,
@@ -73,6 +71,4 @@ export {
 // Once every other advance is known, research carries on into Future Technology 1, 2, …, each costing more than the
 //  last and worth Civilization Score points: p328, Wilson, J.L & Emrich A. (1992). Sid Meier's Civilization, or Rome on
 //  640K a Day. Rocklin, CA: Prima Publishing
-export class FutureTechnology extends Advance {
-  static readonly repeatable = true;
-}
+export { FutureTechnology } from '@civ-clone/base-science-advance-future-technology/FutureTechnology';
