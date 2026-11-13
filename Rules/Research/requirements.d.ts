@@ -1,13 +1,9 @@
 import { AdvanceRegistry } from '@civ-clone/core-science/AdvanceRegistry';
-import { Requirement } from '@civ-clone/core-requirement/Requirement';
-import { Deriver } from '@civ-clone/core-requirement/RequirementRegistry';
 import Requirements from '@civ-clone/core-science/Rules/Requirements';
-/** The rule `entry` is played by: its subject can be researched once the player has discovered the advances it needs. */
-export declare const requirementsRulesFor: (
-  entry: Requirement
-) => Requirements[];
-/** What `registerRules` gives the game's `requirements` to make each entry's rule with. */
-export declare const deriveRequirementsRules: Deriver;
+export {
+  deriveRequirementsRules,
+  requirementsRulesFor,
+} from '@civ-clone/base-science-research/lib/requirements';
 /** Future Technology needs every advance that can't be repeated: not an edge of the graph, so a rule of its own. */
 export declare const futureTechnology: (
   advanceRegistry?: AdvanceRegistry

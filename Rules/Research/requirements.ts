@@ -2,50 +2,21 @@ import {
   AdvanceRegistry,
   instance as advanceRegistryInstance,
 } from '@civ-clone/core-science/AdvanceRegistry';
-import {
-  Requirement,
-  Target,
-  met,
-} from '@civ-clone/core-requirement/Requirement';
 import Advance from '@civ-clone/core-science/Advance';
 import Criterion from '@civ-clone/core-rule/Criterion';
-import { Deriver } from '@civ-clone/core-requirement/RequirementRegistry';
 import Effect from '@civ-clone/core-rule/Effect';
 import { FutureTechnology } from '../../Advances';
 import Requirements from '@civ-clone/core-science/Rules/Requirements';
 import knowsEveryNonRepeatableAdvance from '@civ-clone/base-science-advance-future-technology/lib/knowsEveryNonRepeatableAdvance';
 import requiresAdvances from '../../Requirements';
+import { requirementsRulesFor } from '@civ-clone/base-science-research/lib/requirements';
 
-/** The rule `entry` is played by: its subject can be researched once the player has discovered the advances it needs. */
-export const requirementsRulesFor = (entry: Requirement): Requirements[] =>
-  entry.relation === 'requires'
-    ? [
-        new Requirements(
-          entry.id,
-          new Criterion(
-            (CheckAdvance: typeof Advance): boolean =>
-              CheckAdvance === entry.subject
-          ),
-          new Effect(
-            (
-              CheckAdvance: typeof Advance,
-              discoveredAdvances: Advance[]
-            ): boolean =>
-              met(entry, (target: Target): boolean =>
-                discoveredAdvances.some(
-                  (advance: Advance): boolean =>
-                    advance instanceof (target as typeof Advance)
-                )
-              )
-          )
-        ),
-      ]
-    : [];
-
-/** What `registerRules` gives the game's `requirements` to make each entry's rule with. */
-export const deriveRequirementsRules: Deriver = (
-  entry: Requirement
-): Requirements[] => requirementsRulesFor(entry);
+// The rule each entry is played by moved to base-science-research (civ-clone/web-renderer#1008): these are the same
+//  functions.
+export {
+  deriveRequirementsRules,
+  requirementsRulesFor,
+} from '@civ-clone/base-science-research/lib/requirements';
 
 /** Future Technology needs every advance that can't be repeated: not an edge of the graph, so a rule of its own. */
 export const futureTechnology = (
