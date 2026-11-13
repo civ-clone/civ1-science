@@ -12,12 +12,14 @@ import {
 } from '@civ-clone/core-rule/RuleRegistry';
 import { Anarchy } from '@civ-clone/civ1-government/Governments';
 import City from '@civ-clone/core-city/City';
-import CivilDisorder from '@civ-clone/core-city-happiness/Rules/CivilDisorder';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
 import ProcessYield from '@civ-clone/core-city/Rules/ProcessYield';
 import { Research } from '../../Yields';
 import Yield from '@civ-clone/core-yield/Yield';
+import { addResearch } from '@civ-clone/base-science-research/lib/progress';
+import governedBy from '@civ-clone/base-government-change/lib/governedBy';
+import inCivilDisorder from '@civ-clone/base-city-happiness/lib/civilDisorder';
 
 export const getRules: (
   playerResearchRegistry?: PlayerResearchRegistry,
@@ -33,21 +35,15 @@ export const getRules: (
     new Criterion((cityYield: Yield): boolean => cityYield instanceof Research),
     new Criterion(
       (cityYield: Yield, city: City, yields: Yield[]) =>
-        !ruleRegistry
-          .process(CivilDisorder, city, yields)
-          .some((result: boolean): boolean => result)
+        !inCivilDisorder(city, yields, ruleRegistry)
     ),
     // Under Anarchy no scientific research happens: p217, Wilson, J.L & Emrich A. (1992). Sid Meier's Civilization, or
     // Rome on 640K a Day. Rocklin, CA: Prima Publishing
     new Criterion(
       (cityYield: Yield, city: City): boolean =>
-        !playerGovernmentRegistry
-          .getBy('player', city.player())
-          .some((playerGovernment) => playerGovernment.is(Anarchy))
+        !governedBy(city.player(), [Anarchy], playerGovernmentRegistry)
     ),
-    new Effect((cityYield: Yield, city: City): void =>
-      playerResearchRegistry.getByPlayer(city.player()).add(cityYield)
-    )
+    new Effect(addResearch(playerResearchRegistry))
   ),
 ];
 

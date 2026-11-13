@@ -6,9 +6,12 @@ import {
   PlayerResearchRegistry,
   instance as playerResearchRegistryInstance,
 } from '@civ-clone/core-science/PlayerResearchRegistry';
+import {
+  hasAdvanceToTake,
+  takeAdvance,
+} from '@civ-clone/base-science-research/lib/captured';
 import Advance from '@civ-clone/core-science/Advance';
 import Captured from '@civ-clone/core-city/Rules/Captured';
-import ChoiceMeta from '@civ-clone/core-client/ChoiceMeta';
 import City from '@civ-clone/core-city/City';
 import Criterion from '@civ-clone/core-rule/Criterion';
 import Effect from '@civ-clone/core-rule/Effect';
@@ -34,48 +37,8 @@ export const getRules = (
       (capturedCity: City, capturingPlayer: Player, player: Player): boolean =>
         !isBarbarian(capturingPlayer) && !isBarbarian(player)
     ),
-    new Criterion(
-      (capturedCity: City, capturingPlayer: Player, player: Player): boolean =>
-        playerResearchRegistry
-          .getByPlayer(player)
-          .complete()
-          .some(
-            (advance) =>
-              !(advance.constructor as typeof Advance).repeatable &&
-              !playerResearchRegistry
-                .getByPlayer(capturingPlayer)
-                .completed(advance.constructor as typeof Advance)
-          )
-    ),
-    new Effect(
-      async (
-        capturedCity: City,
-        capturingPlayer: Player,
-        player: Player
-      ): Promise<void> => {
-        const capturingPlayerResearch =
-          playerResearchRegistry.getByPlayer(capturingPlayer);
-        const available = playerResearchRegistry
-            .getByPlayer(player)
-            .complete()
-            .map((advance) => advance.sourceClass() as typeof Advance)
-            .filter(
-              (AdvanceType) =>
-                !AdvanceType.repeatable &&
-                !capturingPlayerResearch.completed(AdvanceType)
-            ),
-          client = clientRegistry.getByPlayer(capturingPlayer),
-          ChosenAdvance = await client.chooseFromList(
-            new ChoiceMeta(
-              available,
-              'capture-city.steal-advance',
-              capturedCity
-            )
-          );
-
-        capturingPlayerResearch.addAdvance(ChosenAdvance);
-      }
-    )
+    new Criterion(hasAdvanceToTake(playerResearchRegistry)),
+    new Effect(takeAdvance(playerResearchRegistry, clientRegistry))
   ),
 ];
 

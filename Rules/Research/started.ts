@@ -2,24 +2,16 @@ import {
   Engine,
   instance as engineInstance,
 } from '@civ-clone/core-engine/Engine';
-import Advance from '@civ-clone/core-science/Advance';
 import Effect from '@civ-clone/core-rule/Effect';
-import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
 import Started from '@civ-clone/core-science/Rules/Started';
+import { emitResearchStarted } from '@civ-clone/base-science-research/lib/events';
 
 export const getRules: (engine?: Engine) => Started[] = (
   engine: Engine = engineInstance
 ): Started[] => [
   new Started(
     'civ1-science:research/started/emit',
-    new Effect(
-      (
-        playerResearch: PlayerResearch,
-        AdvanceToResearch: typeof Advance
-      ): void => {
-        engine.emit('player:research', playerResearch, AdvanceToResearch);
-      }
-    )
+    new Effect(emitResearchStarted(engine))
   ),
 ];
 
