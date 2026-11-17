@@ -16,6 +16,7 @@ import {
 } from '@civ-clone/core-turn-based-game/Turn';
 import { Year, instance as yearInstance } from '@civ-clone/core-game-year/Year';
 import Advance from '@civ-clone/core-science/Advance';
+import { COST_RULE } from '../../RuleIds';
 import Cost from '@civ-clone/core-science/Rules/Cost';
 import Effect from '@civ-clone/core-rule/Effect';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
@@ -23,7 +24,7 @@ import isHuman from '@civ-clone/civ1-difficulty/isHuman';
 import { levelOf } from '@civ-clone/civ1-difficulty/level';
 
 // Advances count from 1, without the free Mining, Irrigation and Roads, as v474.05 counts them.
-const advancesKnown = (playerResearch: PlayerResearch): number =>
+export const advancesKnown = (playerResearch: PlayerResearch): number =>
   playerResearch.complete().length + 1;
 
 const isAD = (year: Year): boolean => {
@@ -34,6 +35,62 @@ const isAD = (year: Year): boolean => {
     return false;
   }
 };
+
+/** What the rate of research costs is read from: the game's difficulty, its players' clients and research, and when. */
+export interface CostContext {
+  gameDifficultyRegistry: GameDifficultyRegistry;
+  clientRegistry: ClientRegistry;
+  playerResearchRegistry: PlayerResearchRegistry;
+  turn: Turn;
+  year: Year;
+}
+
+/**
+ * What each step of an advance costs `playerResearch` now, in bulbs: R, with catch-up, doubled from AD (see below).
+ * `floor`: whether the human's R is held at 11 - advances for the first few, as v474.05's is. A cost that isn't a
+ * number of advances times the rate (civ1-enhanced's tiers, civ-clone/web-renderer#1072) leaves it out.
+ */
+export const rate = (
+  {
+    gameDifficultyRegistry,
+    clientRegistry,
+    playerResearchRegistry,
+    turn,
+    year,
+  }: CostContext,
+  playerResearch: PlayerResearch,
+  floor: boolean = true
+): number => {
+  const level = levelOf(gameDifficultyRegistry),
+    human = isHuman(playerResearch.player(), clientRegistry),
+    advances = advancesKnown(playerResearch),
+    ad = isAD(year),
+    catchUp = ad
+      ? Math.min(
+          Math.max(
+            Math.max(
+              advances,
+              ...playerResearchRegistry
+                .entries()
+                .map((research) => advancesKnown(research))
+            ) - Math.floor(turn.value() / 9),
+            0
+          ),
+          6
+        )
+      : 0,
+    ratio = (human ? 6 + 2 * level : 14 - level) + catchUp;
+
+  return (
+    (human && floor ? Math.max(ratio, 11 - advances) : ratio) * (ad ? 2 : 1)
+  );
+};
+
+/** What an advance costs `playerResearch` by v474.05's rule: the advances it knows, plus one, times the rate. */
+export const costByAdvancesKnown = (
+  context: CostContext,
+  playerResearch: PlayerResearch
+): number => advancesKnown(playerResearch) * rate(context, playerResearch);
 
 // v474.05 (OpenCivOne `CityWorker.cs` L3662-L3690). An advance costs `advances × R` bulbs, where R is 6 + 2 × level
 //  for the human (never below 11 - advances, so the first few cost at least 11 a step) and 14 - level for the
@@ -55,35 +112,19 @@ export const getRules: (
   year: Year = yearInstance
 ): Cost[] => [
   new Cost(
-    'civ1-science:research/cost/by-advances-known',
+    COST_RULE,
     new Effect(
-      (CostAdvance: typeof Advance, playerResearch: PlayerResearch): number => {
-        const level = levelOf(gameDifficultyRegistry),
-          human = isHuman(playerResearch.player(), clientRegistry),
-          advances = advancesKnown(playerResearch),
-          ad = isAD(year),
-          catchUp = ad
-            ? Math.min(
-                Math.max(
-                  Math.max(
-                    advances,
-                    ...playerResearchRegistry
-                      .entries()
-                      .map((research) => advancesKnown(research))
-                  ) - Math.floor(turn.value() / 9),
-                  0
-                ),
-                6
-              )
-            : 0,
-          ratio = (human ? 6 + 2 * level : 14 - level) + catchUp;
-
-        return (
-          advances *
-          (human ? Math.max(ratio, 11 - advances) : ratio) *
-          (ad ? 2 : 1)
-        );
-      }
+      (CostAdvance: typeof Advance, playerResearch: PlayerResearch): number =>
+        costByAdvancesKnown(
+          {
+            gameDifficultyRegistry,
+            clientRegistry,
+            playerResearchRegistry,
+            turn,
+            year,
+          },
+          playerResearch
+        )
     )
   ),
 ];
