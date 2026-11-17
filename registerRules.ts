@@ -24,7 +24,8 @@ export const register = (game: Game): void => {
       game.clients,
       game.playerResearch,
       game.turn,
-      game.year
+      game.year,
+      game.rules
     ),
     ...processYield(game.playerResearch, game.rules, game.playerGovernments)
   );
