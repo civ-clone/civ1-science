@@ -33,6 +33,8 @@ import Research from '@civ-clone/core-science/Yields/Research';
 import Year from '@civ-clone/core-game-year/Year';
 import CatchUp from '../Rules/Research/CatchUp';
 import RateMultiplier from '../Rules/Research/RateMultiplier';
+import AdvanceCount from '@civ-clone/core-science/Rules/AdvanceCount';
+import advanceCount from '../Rules/Research/advance-count';
 import cost from '../Rules/Research/cost';
 import { expect } from 'chai';
 import turnStart from '../Rules/Player/turn-start';
@@ -323,6 +325,129 @@ describe('player:turn-start', () => {
           leader: 11,
         })
       ).equal(100);
+    });
+  });
+
+  describe('counting only the advances gained in play (civ-clone/web-renderer#973)', () => {
+    // Two gained in play (Alphabet, Bronze Working) and two started with (Ceremonial Burial, Masonry).
+    const withStarting = (setting: Setting = {}) => {
+      const set = setUp({ ...setting, known: 2 });
+
+      set.playerResearch.addAdvance(CeremonialBurial, { starting: true });
+      set.playerResearch.addAdvance(Masonry, { starting: true });
+
+      return set;
+    };
+
+    const costWithStarting = (setting: Setting = {}, rules = () => {}) => {
+      const set = withStarting(setting);
+
+      rules.call(set);
+      set.playerResearch.research(TheWheel);
+
+      return set.playerResearch.cost().value();
+    };
+
+    it('should leave out the advances a player started with', () => {
+      // Prince: 3 × 10, not 5 × 10.
+      expect(costWithStarting()).equal(30);
+    });
+
+    it("should count as v474.05 does when no `AdvanceCount` rule is in force, given the game's rules", () => {
+      expect(costWithStarting({ withRules: true })).equal(30);
+    });
+
+    it("should count by v474.05's own `AdvanceCount` rule, given the game's rules", () => {
+      expect(
+        costWithStarting(
+          { withRules: true },
+          function (this: { ruleRegistry: RuleRegistry }) {
+            this.ruleRegistry.register(...advanceCount());
+          }
+        )
+      ).equal(30);
+    });
+
+    it('should count by a rule taking its place, as one counting every advance known', () => {
+      expect(
+        costWithStarting(
+          { withRules: true },
+          function (this: { ruleRegistry: RuleRegistry }) {
+            this.ruleRegistry.register(
+              ...advanceCount(),
+              new AdvanceCount(
+                new High(),
+                new Effect(
+                  (research: PlayerResearch): number =>
+                    research.complete().length
+                )
+              )
+            );
+          }
+        )
+      ).equal(50);
+    });
+
+    it("should hold the human's floor by the advances counted", () => {
+      // Chieftain: max(6, 11 - 3) = 8 a step, × 3 = 24 (counting all four, max(6, 11 - 5) = 6, × 5 = 30).
+      expect(costWithStarting({ Level: Chieftain })).equal(24);
+    });
+
+    it("should measure the leader's lead by the advances it gained in play", () => {
+      const ruleRegistry = new RuleRegistry(),
+        advanceRegistry = new AdvanceRegistry(),
+        clientRegistry = new ClientRegistry(),
+        gameDifficultyRegistry = new GameDifficultyRegistry(),
+        playerResearchRegistry = new PlayerResearchRegistry(),
+        player = new Player(ruleRegistry),
+        playerResearch = new PlayerResearch(
+          player,
+          advanceRegistry,
+          ruleRegistry
+        ),
+        leaderResearch = new PlayerResearch(
+          new Player(ruleRegistry),
+          advanceRegistry,
+          ruleRegistry
+        );
+
+      gameDifficultyRegistry.set(Prince);
+      clientRegistry.register(new Client(player));
+      playerResearchRegistry.register(playerResearch, leaderResearch);
+      ruleRegistry.register(
+        ...cost(
+          gameDifficultyRegistry,
+          clientRegistry,
+          playerResearchRegistry,
+          { value: () => 18 } as unknown as Turn,
+          { value: () => 1 } as unknown as Year
+        )
+      );
+
+      [Alphabet, BronzeWorking, CeremonialBurial, Masonry].forEach((Known) =>
+        playerResearch.addAdvance(Known)
+      );
+
+      // Nine known, six of them started with: 3 + 1 counted, not 9 + 1.
+      [
+        Alphabet,
+        BronzeWorking,
+        CeremonialBurial,
+        Masonry,
+        Pottery,
+        TheWheel,
+      ].forEach((Started) =>
+        leaderResearch.addAdvance(Started, { starting: true })
+      );
+
+      for (let i = 0; i < 3; i++) {
+        leaderResearch.addAdvance(FutureTechnology);
+      }
+
+      playerResearch.research(TheWheel);
+
+      // The most counted is the player's own 5: 5 - 18 / 9 = 3 (the leader's 10 would give 6). Prince, AD: 5 × 13 × 2.
+      expect(playerResearch.cost().value()).equal(5 * 13 * 2);
     });
   });
 });
