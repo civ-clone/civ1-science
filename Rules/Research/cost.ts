@@ -14,12 +14,15 @@ import {
   Turn,
   instance as turnInstance,
 } from '@civ-clone/core-turn-based-game/Turn';
+import { CATCH_UP_RULE, COST_RULE, RATE_MULTIPLIER_RULE } from '../../RuleIds';
+import { RuleRegistry } from '@civ-clone/core-rule/RuleRegistry';
 import { Year, instance as yearInstance } from '@civ-clone/core-game-year/Year';
 import Advance from '@civ-clone/core-science/Advance';
-import { COST_RULE } from '../../RuleIds';
+import CatchUp from './CatchUp';
 import Cost from '@civ-clone/core-science/Rules/Cost';
 import Effect from '@civ-clone/core-rule/Effect';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
+import RateMultiplier from './RateMultiplier';
 import isHuman from '@civ-clone/civ1-difficulty/isHuman';
 import { levelOf } from '@civ-clone/civ1-difficulty/level';
 
@@ -27,7 +30,7 @@ import { levelOf } from '@civ-clone/civ1-difficulty/level';
 export const advancesKnown = (playerResearch: PlayerResearch): number =>
   playerResearch.complete().length + 1;
 
-const isAD = (year: Year): boolean => {
+export const isAD = (year: Year): boolean => {
   try {
     return year.value() >= 0;
   } catch (e) {
@@ -43,54 +46,99 @@ export interface CostContext {
   playerResearchRegistry: PlayerResearchRegistry;
   turn: Turn;
   year: Year;
+  /**
+   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, or
+   * with none of either in force, the rate is v474.05's: doubled, and with catch-up, from AD.
+   */
+  ruleRegistry?: RuleRegistry;
 }
 
 /**
- * What each step of an advance costs `playerResearch` now, in bulbs: R, with catch-up, doubled from AD (see below).
+ * How much the rate rises by when the leader is ahead of schedule, up to 6: the most advances anyone has, less one for
+ * every 9 turns played (`GameEngine.cs` L250-L256), whether or not it applies to `playerResearch` now.
+ */
+export const catchUp = (
+  { playerResearchRegistry, turn }: CostContext,
+  playerResearch: PlayerResearch
+): number =>
+  Math.min(
+    Math.max(
+      Math.max(
+        advancesKnown(playerResearch),
+        ...playerResearchRegistry
+          .entries()
+          .map((research) => advancesKnown(research))
+      ) - Math.floor(turn.value() / 9),
+      0
+    ),
+    6
+  );
+
+/** What `playerResearch`'s rate is multiplied by now: by the game's `RateMultiplier` rules, or doubled from AD. */
+export const rateMultiplier = (
+  { ruleRegistry, year }: CostContext,
+  playerResearch: PlayerResearch
+): number => {
+  if (ruleRegistry === undefined) {
+    return isAD(year) ? 2 : 1;
+  }
+
+  const [multiplier] = ruleRegistry.process(RateMultiplier, playerResearch);
+
+  // With none in force (a set that takes the place of v474.05's switched only partly on), v474.05's.
+  return multiplier ?? (isAD(year) ? 2 : 1);
+};
+
+/** Whether catch-up applies to `playerResearch` now: by the game's `CatchUp` rules, or from AD. */
+export const catchUpApplies = (
+  { ruleRegistry, year }: CostContext,
+  playerResearch: PlayerResearch
+): boolean => {
+  if (ruleRegistry === undefined) {
+    return isAD(year);
+  }
+
+  const [applies] = ruleRegistry.process(CatchUp, playerResearch);
+
+  // With none in force, v474.05's.
+  return applies ?? isAD(year);
+};
+
+/**
+ * What each step of an advance costs `playerResearch` now, in bulbs: R, with catch-up, doubled from AD (see below):
+ * catch-up and the multiplier as the game's `CatchUp` and `RateMultiplier` rules say, when `context` has its rules.
  * `floor`: whether the human's R is held at 11 - advances for the first few, as v474.05's is. A cost that isn't a
  * number of advances times the rate (civ1-enhanced's tiers, civ-clone/web-renderer#1072) leaves it out.
  */
 export const rate = (
-  {
-    gameDifficultyRegistry,
-    clientRegistry,
-    playerResearchRegistry,
-    turn,
-    year,
-  }: CostContext,
+  context: CostContext,
   playerResearch: PlayerResearch,
   floor: boolean = true
 ): number => {
-  const level = levelOf(gameDifficultyRegistry),
-    human = isHuman(playerResearch.player(), clientRegistry),
+  const level = levelOf(context.gameDifficultyRegistry),
+    human = isHuman(playerResearch.player(), context.clientRegistry),
     advances = advancesKnown(playerResearch),
-    ad = isAD(year),
-    catchUp = ad
-      ? Math.min(
-          Math.max(
-            Math.max(
-              advances,
-              ...playerResearchRegistry
-                .entries()
-                .map((research) => advancesKnown(research))
-            ) - Math.floor(turn.value() / 9),
-            0
-          ),
-          6
-        )
-      : 0,
-    ratio = (human ? 6 + 2 * level : 14 - level) + catchUp;
+    ratio =
+      (human ? 6 + 2 * level : 14 - level) +
+      (catchUpApplies(context, playerResearch)
+        ? catchUp(context, playerResearch)
+        : 0);
 
   return (
-    (human && floor ? Math.max(ratio, 11 - advances) : ratio) * (ad ? 2 : 1)
+    (human && floor ? Math.max(ratio, 11 - advances) : ratio) *
+    rateMultiplier(context, playerResearch)
   );
 };
 
-/** What an advance costs `playerResearch` by v474.05's rule: the advances it knows, plus one, times the rate. */
+/**
+ * What an advance costs `playerResearch` by v474.05's rule: the advances it knows, plus one, times the rate, to the
+ * nearest whole bulb (a multiplier that isn't whole, civ-clone/web-renderer#1077, can make it a fraction).
+ */
 export const costByAdvancesKnown = (
   context: CostContext,
   playerResearch: PlayerResearch
-): number => advancesKnown(playerResearch) * rate(context, playerResearch);
+): number =>
+  Math.round(advancesKnown(playerResearch) * rate(context, playerResearch));
 
 // v474.05 (OpenCivOne `CityWorker.cs` L3662-L3690). An advance costs `advances × R` bulbs, where R is 6 + 2 × level
 //  for the human (never below 11 - advances, so the first few cost at least 11 a step) and 14 - level for the
@@ -103,14 +151,18 @@ export const getRules: (
   clientRegistry?: ClientRegistry,
   playerResearchRegistry?: PlayerResearchRegistry,
   turn?: Turn,
-  year?: Year
-) => Cost[] = (
+  year?: Year,
+  ruleRegistry?: RuleRegistry
+) => (Cost | RateMultiplier | CatchUp)[] = (
   gameDifficultyRegistry: GameDifficultyRegistry = gameDifficultyRegistryInstance,
   clientRegistry: ClientRegistry = clientRegistryInstance,
   playerResearchRegistry: PlayerResearchRegistry = playerResearchRegistryInstance,
   turn: Turn = turnInstance,
-  year: Year = yearInstance
-): Cost[] => [
+  year: Year = yearInstance,
+  // The rules the cost asks for its multiplier and catch-up. Left out, the cost is v474.05's whatever rules there
+  //  are, as before they were rules of their own.
+  ruleRegistry?: RuleRegistry
+): (Cost | RateMultiplier | CatchUp)[] => [
   new Cost(
     COST_RULE,
     new Effect(
@@ -122,11 +174,18 @@ export const getRules: (
             playerResearchRegistry,
             turn,
             year,
+            ruleRegistry,
           },
           playerResearch
         )
     )
   ),
+  // Each a rule of its own, so a set can take the place of either (civ-clone/web-renderer#1077).
+  new RateMultiplier(
+    RATE_MULTIPLIER_RULE,
+    new Effect((): number => (isAD(year) ? 2 : 1))
+  ),
+  new CatchUp(CATCH_UP_RULE, new Effect((): boolean => isAD(year))),
 ];
 
 export default getRules;

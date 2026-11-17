@@ -31,6 +31,8 @@ import Effect from '@civ-clone/core-rule/Effect';
 import High from '@civ-clone/core-rule/Priorities/High';
 import Research from '@civ-clone/core-science/Yields/Research';
 import Year from '@civ-clone/core-game-year/Year';
+import CatchUp from '../Rules/Research/CatchUp';
+import RateMultiplier from '../Rules/Research/RateMultiplier';
 import cost from '../Rules/Research/cost';
 import { expect } from 'chai';
 import turnStart from '../Rules/Player/turn-start';
@@ -43,6 +45,11 @@ type Setting = {
   leader?: number;
   year?: number | (() => number);
   turn?: number;
+  // The cost asks the game's rules for its multiplier and catch-up (civ-clone/web-renderer#1077), and these take the
+  //  place of v474.05's.
+  withRules?: boolean;
+  multiplier?: number;
+  catchUp?: boolean;
 };
 
 const setUp = ({
@@ -52,6 +59,9 @@ const setUp = ({
   leader,
   year = -4000,
   turn = 0,
+  withRules = false,
+  multiplier,
+  catchUp,
 }: Setting = {}) => {
   const ruleRegistry = new RuleRegistry(),
     advanceRegistry = new AdvanceRegistry(),
@@ -74,10 +84,24 @@ const setUp = ({
       clientRegistry,
       playerResearchRegistry,
       gameTurn,
-      gameYear
+      gameYear,
+      withRules ? ruleRegistry : undefined
     ),
     ...turnStart(playerResearchRegistry, ruleRegistry)
   );
+
+  // Before v474.05's, as a set's would be by taking their place.
+  if (multiplier !== undefined) {
+    ruleRegistry.register(
+      new RateMultiplier(new High(), new Effect((): number => multiplier))
+    );
+  }
+
+  if (catchUp !== undefined) {
+    ruleRegistry.register(
+      new CatchUp(new High(), new Effect((): boolean => catchUp))
+    );
+  }
   advanceRegistry.register(
     Alphabet,
     BronzeWorking,
@@ -234,5 +258,71 @@ describe('player:turn-start', () => {
 
     expect(first).equal(costOf({ known: 4 }));
     expect(playerResearch.cost().value()).equal(costOf({ known: 5 }));
+  });
+
+  describe("with the game's rules (civ-clone/web-renderer#1077)", () => {
+    it("should fall back to v474.05's when no rule of either kind is in force", () => {
+      const { playerResearch, ruleRegistry } = setUp({
+        withRules: true,
+        year: 1,
+        turn: 900,
+      });
+
+      [
+        ...ruleRegistry.get(RateMultiplier),
+        ...ruleRegistry.get(CatchUp),
+      ].forEach((rule) => rule.disable());
+      playerResearch.research(TheWheel);
+
+      // 5 × 10 × 2, as without the rules.
+      expect(playerResearch.cost().value()).equal(100);
+    });
+
+    it("should cost what it did, by v474.05's own multiplier and catch-up rules", () => {
+      [
+        {},
+        { year: 1, turn: 200 },
+        { year: 1, turn: 18, leader: 10 },
+        { Level: Chieftain, known: 1 },
+        { human: false, year: 1, turn: 0, leader: 8 },
+      ].forEach((setting: Setting) =>
+        expect(
+          costOf({ ...setting, withRules: true }),
+          JSON.stringify(setting)
+        ).equal(costOf(setting))
+      );
+    });
+
+    it("should multiply the rate by what a rule taking v474.05's place says, rounding the cost", () => {
+      // The fifth advance at Prince: 5 × 10 a step, × 0.65 = 32.5, to 33; in AD (without catch-up), not doubled.
+      expect(costOf({ withRules: true, multiplier: 0.65 })).equal(33);
+      expect(
+        costOf({ withRules: true, multiplier: 3, catchUp: false, year: 1 })
+      ).equal(150);
+    });
+
+    it("should hold the human's floor before the multiplier, as before the doubling", () => {
+      // Chieftain, nothing known: max(6, 11 - 1) = 10 a step, × 0.5 = 5.
+      expect(
+        costOf({ withRules: true, multiplier: 0.5, Level: Chieftain, known: 0 })
+      ).equal(5);
+    });
+
+    it('should add catch-up whenever a rule says so, in BC too, and none when one says not', () => {
+      // The leader has 11, plus one: 12 - 18 / 9 = 10, held at 6. Prince, BC: 5 × (10 + 6) = 80.
+      expect(
+        costOf({ withRules: true, catchUp: true, turn: 18, leader: 11 })
+      ).equal(80);
+      // In AD with catch-up off: 5 × 10 × 2 = 100.
+      expect(
+        costOf({
+          withRules: true,
+          catchUp: false,
+          year: 1,
+          turn: 18,
+          leader: 11,
+        })
+      ).equal(100);
+    });
   });
 });

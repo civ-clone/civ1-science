@@ -13,7 +13,7 @@ const started_1 = require("./Rules/Research/started");
 const turn_start_1 = require("./Rules/Player/turn-start");
 const core_game_1 = require("@civ-clone/core-game");
 const register = (game) => {
-    game.rules.register(...(0, action_1.default)(game.playerResearch), ...(0, added_1.default)(game.advances, game.playerResearch, game.rules, game.rng), ...(0, captured_1.default)(game.playerResearch, game.rng, game.clients), ...(0, complete_1.default)(game.engine), ...(0, cost_1.default)(game.difficulty, game.clients, game.playerResearch, game.turn, game.year), ...(0, process_yield_1.default)(game.playerResearch, game.rules, game.playerGovernments));
+    game.rules.register(...(0, action_1.default)(game.playerResearch), ...(0, added_1.default)(game.advances, game.playerResearch, game.rules, game.rng), ...(0, captured_1.default)(game.playerResearch, game.rng, game.clients), ...(0, complete_1.default)(game.engine), ...(0, cost_1.default)(game.difficulty, game.clients, game.playerResearch, game.turn, game.year, game.rules), ...(0, process_yield_1.default)(game.playerResearch, game.rules, game.playerGovernments));
     // Which advances a player can research, from the entries in `Requirements`: their rules land where the research
     //  rules always were, so nothing else moves in the order rules run (civ-clone/web-renderer#37).
     game.requirements.add(requirements_1.deriveRequirementsRules, ...Requirements_1.default);
