@@ -261,6 +261,23 @@ describe('player:turn-start', () => {
   });
 
   describe("with the game's rules (civ-clone/web-renderer#1077)", () => {
+    it("should fall back to v474.05's when no rule of either kind is in force", () => {
+      const { playerResearch, ruleRegistry } = setUp({
+        withRules: true,
+        year: 1,
+        turn: 900,
+      });
+
+      [
+        ...ruleRegistry.get(RateMultiplier),
+        ...ruleRegistry.get(CatchUp),
+      ].forEach((rule) => rule.disable());
+      playerResearch.research(TheWheel);
+
+      // 5 × 10 × 2, as without the rules.
+      expect(playerResearch.cost().value()).equal(100);
+    });
+
     it("should cost what it did, by v474.05's own multiplier and catch-up rules", () => {
       [
         {},

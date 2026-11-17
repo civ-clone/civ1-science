@@ -40,7 +40,8 @@ const rateMultiplier = ({ ruleRegistry, year }, playerResearch) => {
         return (0, exports.isAD)(year) ? 2 : 1;
     }
     const [multiplier] = ruleRegistry.process(RateMultiplier_1.default, playerResearch);
-    return multiplier !== null && multiplier !== void 0 ? multiplier : 1;
+    // With none in force (a set that takes the place of v474.05's switched only partly on), v474.05's.
+    return multiplier !== null && multiplier !== void 0 ? multiplier : ((0, exports.isAD)(year) ? 2 : 1);
 };
 exports.rateMultiplier = rateMultiplier;
 /** Whether catch-up applies to `playerResearch` now: by the game's `CatchUp` rules, or from AD. */
@@ -49,7 +50,8 @@ const catchUpApplies = ({ ruleRegistry, year }, playerResearch) => {
         return (0, exports.isAD)(year);
     }
     const [applies] = ruleRegistry.process(CatchUp_1.default, playerResearch);
-    return applies !== null && applies !== void 0 ? applies : false;
+    // With none in force, v474.05's.
+    return applies !== null && applies !== void 0 ? applies : (0, exports.isAD)(year);
 };
 exports.catchUpApplies = catchUpApplies;
 /**

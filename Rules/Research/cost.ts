@@ -47,8 +47,8 @@ export interface CostContext {
   turn: Turn;
   year: Year;
   /**
-   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, the
-   * rate is v474.05's: doubled, and with catch-up, from AD.
+   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, or
+   * with none of either in force, the rate is v474.05's: doubled, and with catch-up, from AD.
    */
   ruleRegistry?: RuleRegistry;
 }
@@ -85,7 +85,8 @@ export const rateMultiplier = (
 
   const [multiplier] = ruleRegistry.process(RateMultiplier, playerResearch);
 
-  return multiplier ?? 1;
+  // With none in force (a set that takes the place of v474.05's switched only partly on), v474.05's.
+  return multiplier ?? (isAD(year) ? 2 : 1);
 };
 
 /** Whether catch-up applies to `playerResearch` now: by the game's `CatchUp` rules, or from AD. */
@@ -99,7 +100,8 @@ export const catchUpApplies = (
 
   const [applies] = ruleRegistry.process(CatchUp, playerResearch);
 
-  return applies ?? false;
+  // With none in force, v474.05's.
+  return applies ?? isAD(year);
 };
 
 /**

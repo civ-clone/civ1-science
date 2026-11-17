@@ -18,8 +18,8 @@ export interface CostContext {
   turn: Turn;
   year: Year;
   /**
-   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, the
-   * rate is v474.05's: doubled, and with catch-up, from AD.
+   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, or
+   * with none of either in force, the rate is v474.05's: doubled, and with catch-up, from AD.
    */
   ruleRegistry?: RuleRegistry;
 }
