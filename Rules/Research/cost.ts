@@ -18,17 +18,33 @@ import { CATCH_UP_RULE, COST_RULE, RATE_MULTIPLIER_RULE } from '../../RuleIds';
 import { RuleRegistry } from '@civ-clone/core-rule/RuleRegistry';
 import { Year, instance as yearInstance } from '@civ-clone/core-game-year/Year';
 import Advance from '@civ-clone/core-science/Advance';
+import AdvanceCount from '@civ-clone/core-science/Rules/AdvanceCount';
 import CatchUp from './CatchUp';
 import Cost from '@civ-clone/core-science/Rules/Cost';
 import Effect from '@civ-clone/core-rule/Effect';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
 import RateMultiplier from './RateMultiplier';
+import gainedInPlay from '@civ-clone/base-science-research/lib/count';
 import isHuman from '@civ-clone/civ1-difficulty/isHuman';
 import { levelOf } from '@civ-clone/civ1-difficulty/level';
 
-// Advances count from 1, without the free Mining, Irrigation and Roads, as v474.05 counts them.
-export const advancesKnown = (playerResearch: PlayerResearch): number =>
-  playerResearch.complete().length + 1;
+/**
+ * The advances `playerResearch` is counted as knowing, from 1, without the free Mining, Irrigation and Roads, as
+ *  v474.05 counts them (`tech_count`): by the game's `AdvanceCount` rules, given them (civ-clone/web-renderer#973),
+ *  and otherwise, or with none in force, only those gained in play, as v474.05's own rule
+ *  (`Rules/Research/advance-count`) counts them.
+ */
+export const advancesKnown = (
+  playerResearch: PlayerResearch,
+  ruleRegistry?: RuleRegistry
+): number => {
+  const [count] =
+    ruleRegistry === undefined
+      ? []
+      : ruleRegistry.process(AdvanceCount, playerResearch);
+
+  return (count ?? gainedInPlay(playerResearch)) + 1;
+};
 
 export const isAD = (year: Year): boolean => {
   try {
@@ -47,8 +63,9 @@ export interface CostContext {
   turn: Turn;
   year: Year;
   /**
-   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, or
-   * with none of either in force, the rate is v474.05's: doubled, and with catch-up, from AD.
+   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077) and its
+   * `AdvanceCount` rules (civ-clone/web-renderer#973). Without them, or with none of a kind in force, the rate is
+   * v474.05's: doubled, and with catch-up, from AD, counting only the advances gained in play.
    */
   ruleRegistry?: RuleRegistry;
 }
@@ -58,16 +75,16 @@ export interface CostContext {
  * every 9 turns played (`GameEngine.cs` L250-L256), whether or not it applies to `playerResearch` now.
  */
 export const catchUp = (
-  { playerResearchRegistry, turn }: CostContext,
+  { playerResearchRegistry, turn, ruleRegistry }: CostContext,
   playerResearch: PlayerResearch
 ): number =>
   Math.min(
     Math.max(
       Math.max(
-        advancesKnown(playerResearch),
+        advancesKnown(playerResearch, ruleRegistry),
         ...playerResearchRegistry
           .entries()
-          .map((research) => advancesKnown(research))
+          .map((research) => advancesKnown(research, ruleRegistry))
       ) - Math.floor(turn.value() / 9),
       0
     ),
@@ -117,7 +134,7 @@ export const rate = (
 ): number => {
   const level = levelOf(context.gameDifficultyRegistry),
     human = isHuman(playerResearch.player(), context.clientRegistry),
-    advances = advancesKnown(playerResearch),
+    advances = advancesKnown(playerResearch, context.ruleRegistry),
     ratio =
       (human ? 6 + 2 * level : 14 - level) +
       (catchUpApplies(context, playerResearch)
@@ -138,7 +155,10 @@ export const costByAdvancesKnown = (
   context: CostContext,
   playerResearch: PlayerResearch
 ): number =>
-  Math.round(advancesKnown(playerResearch) * rate(context, playerResearch));
+  Math.round(
+    advancesKnown(playerResearch, context.ruleRegistry) *
+      rate(context, playerResearch)
+  );
 
 // v474.05 (OpenCivOne `CityWorker.cs` L3662-L3690). An advance costs `advances × R` bulbs, where R is 6 + 2 × level
 //  for the human (never below 11 - advances, so the first few cost at least 11 a step) and 14 - level for the

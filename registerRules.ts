@@ -1,5 +1,6 @@
 import action from './Rules/Player/action';
 import added from './Rules/Player/added';
+import advanceCount from './Rules/Research/advance-count';
 import captured from './Rules/City/captured';
 import complete from './Rules/Research/complete';
 import cost from './Rules/Research/cost';
@@ -19,6 +20,7 @@ export const register = (game: Game): void => {
     ...added(game.advances, game.playerResearch, game.rules, game.rng),
     ...captured(game.playerResearch, game.rng, game.clients),
     ...complete(game.engine),
+    ...advanceCount(),
     ...cost(
       game.difficulty,
       game.clients,

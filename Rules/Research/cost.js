@@ -7,14 +7,26 @@ const PlayerResearchRegistry_1 = require("@civ-clone/core-science/PlayerResearch
 const Turn_1 = require("@civ-clone/core-turn-based-game/Turn");
 const RuleIds_1 = require("../../RuleIds");
 const Year_1 = require("@civ-clone/core-game-year/Year");
+const AdvanceCount_1 = require("@civ-clone/core-science/Rules/AdvanceCount");
 const CatchUp_1 = require("./CatchUp");
 const Cost_1 = require("@civ-clone/core-science/Rules/Cost");
 const Effect_1 = require("@civ-clone/core-rule/Effect");
 const RateMultiplier_1 = require("./RateMultiplier");
+const count_1 = require("@civ-clone/base-science-research/lib/count");
 const isHuman_1 = require("@civ-clone/civ1-difficulty/isHuman");
 const level_1 = require("@civ-clone/civ1-difficulty/level");
-// Advances count from 1, without the free Mining, Irrigation and Roads, as v474.05 counts them.
-const advancesKnown = (playerResearch) => playerResearch.complete().length + 1;
+/**
+ * The advances `playerResearch` is counted as knowing, from 1, without the free Mining, Irrigation and Roads, as
+ *  v474.05 counts them (`tech_count`): by the game's `AdvanceCount` rules, given them (civ-clone/web-renderer#973),
+ *  and otherwise, or with none in force, only those gained in play, as v474.05's own rule
+ *  (`Rules/Research/advance-count`) counts them.
+ */
+const advancesKnown = (playerResearch, ruleRegistry) => {
+    const [count] = ruleRegistry === undefined
+        ? []
+        : ruleRegistry.process(AdvanceCount_1.default, playerResearch);
+    return (count !== null && count !== void 0 ? count : (0, count_1.default)(playerResearch)) + 1;
+};
 exports.advancesKnown = advancesKnown;
 const isAD = (year) => {
     try {
@@ -30,9 +42,9 @@ exports.isAD = isAD;
  * How much the rate rises by when the leader is ahead of schedule, up to 6: the most advances anyone has, less one for
  * every 9 turns played (`GameEngine.cs` L250-L256), whether or not it applies to `playerResearch` now.
  */
-const catchUp = ({ playerResearchRegistry, turn }, playerResearch) => Math.min(Math.max(Math.max((0, exports.advancesKnown)(playerResearch), ...playerResearchRegistry
+const catchUp = ({ playerResearchRegistry, turn, ruleRegistry }, playerResearch) => Math.min(Math.max(Math.max((0, exports.advancesKnown)(playerResearch, ruleRegistry), ...playerResearchRegistry
     .entries()
-    .map((research) => (0, exports.advancesKnown)(research))) - Math.floor(turn.value() / 9), 0), 6);
+    .map((research) => (0, exports.advancesKnown)(research, ruleRegistry))) - Math.floor(turn.value() / 9), 0), 6);
 exports.catchUp = catchUp;
 /** What `playerResearch`'s rate is multiplied by now: by the game's `RateMultiplier` rules, or doubled from AD. */
 const rateMultiplier = ({ ruleRegistry, year }, playerResearch) => {
@@ -61,7 +73,7 @@ exports.catchUpApplies = catchUpApplies;
  * number of advances times the rate (civ1-enhanced's tiers, civ-clone/web-renderer#1072) leaves it out.
  */
 const rate = (context, playerResearch, floor = true) => {
-    const level = (0, level_1.levelOf)(context.gameDifficultyRegistry), human = (0, isHuman_1.default)(playerResearch.player(), context.clientRegistry), advances = (0, exports.advancesKnown)(playerResearch), ratio = (human ? 6 + 2 * level : 14 - level) +
+    const level = (0, level_1.levelOf)(context.gameDifficultyRegistry), human = (0, isHuman_1.default)(playerResearch.player(), context.clientRegistry), advances = (0, exports.advancesKnown)(playerResearch, context.ruleRegistry), ratio = (human ? 6 + 2 * level : 14 - level) +
         ((0, exports.catchUpApplies)(context, playerResearch)
             ? (0, exports.catchUp)(context, playerResearch)
             : 0);
@@ -73,7 +85,8 @@ exports.rate = rate;
  * What an advance costs `playerResearch` by v474.05's rule: the advances it knows, plus one, times the rate, to the
  * nearest whole bulb (a multiplier that isn't whole, civ-clone/web-renderer#1077, can make it a fraction).
  */
-const costByAdvancesKnown = (context, playerResearch) => Math.round((0, exports.advancesKnown)(playerResearch) * (0, exports.rate)(context, playerResearch));
+const costByAdvancesKnown = (context, playerResearch) => Math.round((0, exports.advancesKnown)(playerResearch, context.ruleRegistry) *
+    (0, exports.rate)(context, playerResearch));
 exports.costByAdvancesKnown = costByAdvancesKnown;
 // v474.05 (OpenCivOne `CityWorker.cs` L3662-L3690). An advance costs `advances × R` bulbs, where R is 6 + 2 × level
 //  for the human (never below 11 - advances, so the first few cost at least 11 a step) and 14 - level for the

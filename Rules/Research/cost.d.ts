@@ -8,7 +8,16 @@ import CatchUp from './CatchUp';
 import Cost from '@civ-clone/core-science/Rules/Cost';
 import PlayerResearch from '@civ-clone/core-science/PlayerResearch';
 import RateMultiplier from './RateMultiplier';
-export declare const advancesKnown: (playerResearch: PlayerResearch) => number;
+/**
+ * The advances `playerResearch` is counted as knowing, from 1, without the free Mining, Irrigation and Roads, as
+ *  v474.05 counts them (`tech_count`): by the game's `AdvanceCount` rules, given them (civ-clone/web-renderer#973),
+ *  and otherwise, or with none in force, only those gained in play, as v474.05's own rule
+ *  (`Rules/Research/advance-count`) counts them.
+ */
+export declare const advancesKnown: (
+  playerResearch: PlayerResearch,
+  ruleRegistry?: RuleRegistry
+) => number;
 export declare const isAD: (year: Year) => boolean;
 /** What the rate of research costs is read from: the game's difficulty, its players' clients and research, and when. */
 export interface CostContext {
@@ -18,8 +27,9 @@ export interface CostContext {
   turn: Turn;
   year: Year;
   /**
-   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077). Without them, or
-   * with none of either in force, the rate is v474.05's: doubled, and with catch-up, from AD.
+   * The game's rules, for its `RateMultiplier` and `CatchUp` rules (civ-clone/web-renderer#1077) and its
+   * `AdvanceCount` rules (civ-clone/web-renderer#973). Without them, or with none of a kind in force, the rate is
+   * v474.05's: doubled, and with catch-up, from AD, counting only the advances gained in play.
    */
   ruleRegistry?: RuleRegistry;
 }
@@ -28,7 +38,7 @@ export interface CostContext {
  * every 9 turns played (`GameEngine.cs` L250-L256), whether or not it applies to `playerResearch` now.
  */
 export declare const catchUp: (
-  { playerResearchRegistry, turn }: CostContext,
+  { playerResearchRegistry, turn, ruleRegistry }: CostContext,
   playerResearch: PlayerResearch
 ) => number;
 /** What `playerResearch`'s rate is multiplied by now: by the game's `RateMultiplier` rules, or doubled from AD. */
