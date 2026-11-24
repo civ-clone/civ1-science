@@ -4,6 +4,7 @@ import {
 } from '@civ-clone/core-science/AdvanceRegistry';
 import Advance from '@civ-clone/core-science/Advance';
 import Criterion from '@civ-clone/core-rule/Criterion';
+import Description from '@civ-clone/core-rule/Description';
 import Effect from '@civ-clone/core-rule/Effect';
 import { FutureTechnology } from '../../Advances';
 import Requirements from '@civ-clone/core-science/Rules/Requirements';
@@ -31,7 +32,12 @@ export const futureTechnology = (
     new Effect(
       (CheckAdvance: typeof Advance, discoveredAdvances: Advance[]): boolean =>
         knowsEveryNonRepeatableAdvance(advanceRegistry, discoveredAdvances)
-    )
+    ),
+    // What it needs, for the Civilopedia (civ-clone/web-renderer#621), as no requirement entry can say it.
+    new Description({
+      type: 'needs_every_other_advance',
+      subject: FutureTechnology,
+    })
   );
 
 /**

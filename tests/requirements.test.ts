@@ -159,4 +159,15 @@ describe('requirements', () => {
 
     expect(playerResearch.available()).eql([FutureTechnology]);
   });
+
+  it('Future Technology says it needs every other advance, on the rule that asks it (civ-clone/web-renderer#621)', () => {
+    const [rule] = requirements().filter(
+      (rule) =>
+        rule.id() === 'civ1-science:research/requirements/FutureTechnology'
+    );
+
+    expect(rule.descriptions()).eql([
+      { type: 'needs_every_other_advance', subject: FutureTechnology },
+    ]);
+  });
 });
